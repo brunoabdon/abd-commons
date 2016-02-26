@@ -4,8 +4,24 @@
   <artifactId>abd-commons-dal</artifactId>
   <packaging>jar</packaging>
   <version>1.1-SNAPSHOT</version>
-  <name>abd-commons-dal</name>
-  <url>http://maven.apache.org</url>
+  <name>br.nom.abdon:abd-commons-dal</name>
+  <description>Very very basic Java lib for data access layer on my own projects.</description>
+  <url>https://github.com/brunoabdon/abd-commons-dal</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, Version 3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>  
+
+    <developers>
+        <developer>
+            <name>Bruno</name>
+            <organization>Abdonia</organization>
+            <organizationUrl>https://github.com/abdonia</organizationUrl>
+        </developer>
+    </developers>    
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -17,6 +33,11 @@
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.1-api</artifactId>
       <version>1.0.0.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.6.3</version>
     </dependency>
   </dependencies>
 
