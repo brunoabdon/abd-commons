@@ -3,7 +3,7 @@
 
     <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-rest</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>abd-commons-rest</name>
