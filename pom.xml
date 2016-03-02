@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>abd-commons-rest</name>
-    <description>Very very basic Java lib for data access layer on my own projects.</description>
+    <description>Very very basic Java lib for rest stuff on my own projects.</description>
     <url>https://github.com/brunoabdon/abd-commons-rest</url>
 
     <licenses>
