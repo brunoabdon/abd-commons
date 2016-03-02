@@ -3,7 +3,7 @@
   <groupId>com.github.brunoabdon</groupId>
   <artifactId>abd-commons-dal</artifactId>
   <packaging>jar</packaging>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <name>com.github.brunoabdon:abd-commons-dal</name>
   <description>Very very basic Java lib for data access layer on my own projects.</description>
   <url>https://github.com/brunoabdon/abd-commons-dal</url>
