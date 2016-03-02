@@ -132,9 +132,9 @@
     </dependencies>
 
     <scm>
-    	<url>https://github.com/brunoabdon/abd-commons-dal.git</url>
-        <connection>scm:git:git://github.com/brunoabdon/abd-commons-dal.git</connection>
-        <developerConnection>scm:git:git@github.com:brunoabdon/abd-commons-dal.git</developerConnection>
+    	<url>https://github.com/brunoabdon/abd-commons-rest.git</url>
+        <connection>scm:git:git://github.com/brunoabdon/abd-commons-rest.git</connection>
+        <developerConnection>scm:git:git@github.com:brunoabdon/abd-commons-rest.git</developerConnection>
     </scm>  
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
