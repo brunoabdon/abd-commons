@@ -4,7 +4,7 @@
     <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-rest</artifactId>
     <packaging>jar</packaging>
-    <version>1.3.1-SNAPSHOT</version>
+    <version>1.3.1</version>
 
     <name>abd-commons-rest</name>
     <description>Very very basic Java lib for rest stuff on my own projects.</description>
