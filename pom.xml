@@ -4,7 +4,7 @@
     <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-rest</artifactId>
     <packaging>jar</packaging>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
 
     <name>abd-commons-rest</name>
     <description>Very very basic Java lib for rest stuff on my own projects.</description>
@@ -117,6 +117,11 @@
             <version>1.10</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>        
         <dependency>
             <groupId>com.github.brunoabdon</groupId>
             <artifactId>abd-commons-dal</artifactId>
