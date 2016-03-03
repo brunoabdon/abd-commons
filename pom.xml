@@ -3,8 +3,8 @@
 
     <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-rest</artifactId>
-    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <version>1.2-SNAPSHOT</version>
 
     <name>abd-commons-rest</name>
     <description>Very very basic Java lib for rest stuff on my own projects.</description>
@@ -50,7 +50,6 @@
                  <autoReleaseAfterClose>true</autoReleaseAfterClose>
                </configuration>
             </plugin>
-             
         </plugins>
     </build>
 
@@ -59,19 +58,19 @@
         <id>release</id>
         <build>
             <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -107,14 +106,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.brunoabdon</groupId>
-            <artifactId>abd-commons-dal</artifactId>
-            <version>1.2</version>
-        </dependency>            
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0.1</version>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>3.8.1</version>
+          <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -122,13 +117,11 @@
             <version>1.10</version>
             <type>jar</type>
         </dependency>
-        
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
+            <groupId>com.github.brunoabdon</groupId>
+            <artifactId>abd-commons-dal</artifactId>
+            <version>1.2</version>
+        </dependency>        
     </dependencies>
 
     <scm>
@@ -137,8 +130,8 @@
         <developerConnection>scm:git:git@github.com:brunoabdon/abd-commons-rest.git</developerConnection>
     </scm>  
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>
