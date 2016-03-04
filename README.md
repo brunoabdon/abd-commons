@@ -1,3 +1,3 @@
 # abd-commons-util
-classes basicas do core pra qualquer aplicacao gastoso
+Very very basic Java utility lib for use on my own projects.
 
