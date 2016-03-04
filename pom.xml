@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-rest</artifactId>
     <packaging>jar</packaging>
@@ -49,21 +49,20 @@
                  <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                  <autoReleaseAfterClose>true</autoReleaseAfterClose>
                </configuration>
+            </plugin>          
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-            
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -91,27 +90,14 @@
                     </execution>
                 </executions>
              </plugin>
-
-
         </plugins>
     </build>
-
-    <!--profiles>
-      <profile> 
-        <id>release</id>
-        <build>
-            <plugins>
-            
-            </plugins>
-        </build>
-      </profile>
-    </profiles-->
 
     <dependencies>
         <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
-          <version>3.8.1</version>
+          <version>4.12</version>
           <scope>test</scope>
         </dependency>
         <dependency>
