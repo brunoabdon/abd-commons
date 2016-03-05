@@ -4,7 +4,7 @@
     <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-util</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <name>abd-commons-util</name>
     <description>Very very basic Java utility lib for use on my own projects.</description>
