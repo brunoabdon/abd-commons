@@ -159,12 +159,14 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 entityManager.getTransaction().commit();
 
                 response = Response.noContent().build();
+
+            } catch ( EntityNotFoundException ex){
+                throw new NotFoundException(ex);
             } catch (DalException e) {
                 response =
                     Response.status(Response.Status.CONFLICT)
                             .entity(e.getMessage())
                             .build();
-
             } finally {
                 entityManager.close();
             }
