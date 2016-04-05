@@ -20,11 +20,13 @@ import br.nom.abdon.dal.DalException;
 import br.nom.abdon.dal.Dao;
 import br.nom.abdon.dal.EntityNotFoundException;
 import br.nom.abdon.modelo.Entidade;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -39,9 +41,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.EntityTag;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @param <E>
@@ -63,7 +69,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     protected EntityManagerFactory emf;
 
     private final String path;
-
+    
     public AbstractRestCrud(String path) {
         this.path = path + "/" ;
     }
@@ -106,8 +112,10 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     
     @GET
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response pegar(@Context Request request, @PathParam("id") Key id){
+    public Response pegar(
+            final @Context Request request, 
+            final @PathParam("id") Key id,
+            final @Context HttpHeaders httpHeaders){
 
         final Response response;
         
@@ -115,7 +123,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         try {
             final E entity = getDao().find(entityManager, id);
             
-            final EntityTag tag = new EntityTag(Integer.toString(entity.hashCode()));
+            EntityTag tag =  makeTag(entity, httpHeaders);
             Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
             if(builder==null){
 		//preconditions are not met and the cache is invalid
@@ -139,7 +147,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
     @POST
     @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response atualizar(@PathParam("id") Key id, E entity){
         
         Response response;
@@ -206,17 +213,22 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     }
 
     protected Response buildResponse(
-            final Request request, final List<?> entidades){
+            final Request request, 
+            final HttpHeaders headers,
+            final List<E> entidades){
         
-        final EntityTag tag = 
-            new EntityTag(Integer.toString(entidades.hashCode()));
+        final EntityTag tag = makeTag(entidades, headers);
 
         Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
         
         if(builder==null){
             //preconditions are not met and the cache is invalid
             //need to send new value with reponse code 200 (OK)
-            builder = Response.ok(entidades);
+            
+            final GenericEntity<List<? extends Entidade>> genericEntity = 
+                new GenericEntity<List<? extends Entidade>>(entidades){};
+            
+            builder = Response.ok(genericEntity);
             builder.tag(tag);
         }
         return builder.build();
@@ -234,6 +246,22 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         return uri;
     }
     
+
+    private EntityTag makeTag(
+            final Object thing, final HttpHeaders httpHeaders) {
+        
+        final String accept = httpHeaders.getHeaderString(HttpHeaders.ACCEPT);
+
+        final int hashCode = 
+            new HashCodeBuilder(3,23)
+                .append(thing)
+                .append(accept)
+                .toHashCode();
+        
+        return new EntityTag(Integer.toString(hashCode));
+
+    }
+
     protected abstract Dao<E,Key> getDao();
     
 }
