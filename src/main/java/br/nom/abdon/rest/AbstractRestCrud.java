@@ -215,9 +215,9 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     protected Response buildResponse(
             final Request request, 
             final HttpHeaders headers,
-            final List<E> entidades){
+            final Object entity){
         
-        final EntityTag tag = makeTag(entidades, headers);
+        final EntityTag tag = makeTag(entity, headers);
 
         Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
         
@@ -225,10 +225,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             //preconditions are not met and the cache is invalid
             //need to send new value with reponse code 200 (OK)
             
-            final GenericEntity<List<? extends Entidade>> genericEntity = 
-                new GenericEntity<List<? extends Entidade>>(entidades){};
-            
-            builder = Response.ok(genericEntity);
+            builder = Response.ok(entity);
             builder.tag(tag);
         }
         return builder.build();
