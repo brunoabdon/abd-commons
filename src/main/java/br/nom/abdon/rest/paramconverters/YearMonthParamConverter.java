@@ -19,17 +19,15 @@ package br.nom.abdon.rest.paramconverters;
 import java.time.YearMonth;
 
 /**
- *
  * @author Bruno Abdon
  */
 public class YearMonthParamConverter extends AbstractTemporalParamConveter<YearMonth>{
 
-    public static final YearMonthParamConverter instance = 
+    public static final YearMonthParamConverter INSTANCE = 
         new YearMonthParamConverter();
-    
+
     @Override
-    protected YearMonth parse(String strTemporal) {
+    protected YearMonth parse(final String strTemporal) {
         return YearMonth.parse(strTemporal);
     }
-    
 }

@@ -24,8 +24,8 @@ import java.time.LocalDate;
  */
 public class LocalDateParamConverter extends AbstractTemporalParamConveter<LocalDate>{
 
-    public static LocalDateParamConverter 
-        instance = new LocalDateParamConverter();
+    public static LocalDateParamConverter INSTANCE = 
+        new LocalDateParamConverter();
 
     @Override
     protected LocalDate parse(final String strTemporal) {

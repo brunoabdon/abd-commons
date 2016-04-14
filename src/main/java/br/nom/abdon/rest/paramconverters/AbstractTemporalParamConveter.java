@@ -31,25 +31,24 @@ public abstract class AbstractTemporalParamConveter<T extends Temporal>
     public T fromString(final String strTemporal) {
        if(strTemporal == null)
             throw new IllegalArgumentException(strTemporal);
-            
+
         final T temporal;
-        
+
         try {
             temporal = parse(strTemporal);
-            
+
         } catch (DateTimeParseException e){
             throw new IllegalArgumentException(strTemporal);
         }
-        
+
         return temporal;
-         
+
     }
 
     @Override
-    public String toString(T temporal) {
+    public String toString(final T temporal) {
         return temporal.toString();
     }
     
     protected abstract T parse(String strTemporal);
-    
 }

@@ -33,14 +33,15 @@ public class TemporalParamConverterProvider implements ParamConverterProvider{
 
     @Override
     public <T> ParamConverter<T> getConverter(
-            Class<T> rawType, 
-            Type genericType, 
-            Annotation[] annotations) {
+            final Class<T> rawType, 
+            final Type genericType, 
+            final Annotation[] annotations) {
+
         return (ParamConverter<T>)
                 (rawType == LocalDate.class 
-                    ? LocalDateParamConverter.instance
+                    ? LocalDateParamConverter.INSTANCE
                     : rawType == YearMonth.class
-                        ? YearMonthParamConverter.instance
+                        ? YearMonthParamConverter.INSTANCE
                         : null);
     }
 }
