@@ -121,7 +121,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         
         final EntityManager entityManager = emf.createEntityManager();
         try {
-            final E entity = getDao().find(entityManager, id);
+            final E entity = getEntity(entityManager, id);
             
             EntityTag tag =  makeTag(entity, httpHeaders);
             Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
@@ -143,6 +143,12 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             entityManager.close();
         }
         return response;
+    }
+
+    protected E getEntity(
+            final EntityManager entityManager, 
+            final Key id) throws DalException {
+        return getDao().find(entityManager, id);
     }
 
     @POST
