@@ -57,7 +57,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     private static final Logger LOG = 
         Logger.getLogger(AbstractRestCrud.class.getName());
 
-    private static final Response ERROR_MISSING_ENTITY = 
+    protected static final Response ERROR_MISSING_ENTITY = 
         Response.status(Response.Status.BAD_REQUEST)
                 .entity("br.nom.abdon.rest.MISSING_ENTITY")
                 .build();
