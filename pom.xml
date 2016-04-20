@@ -119,7 +119,7 @@
         <dependency>
             <groupId>com.github.brunoabdon</groupId>
             <artifactId>abd-commons-dal</artifactId>
-            <version>1.2</version>
+            <version>1.3-SNAPSHOT</version>
         </dependency>        
     </dependencies>
 

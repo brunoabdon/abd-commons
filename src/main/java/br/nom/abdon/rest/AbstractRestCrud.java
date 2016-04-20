@@ -158,16 +158,18 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             
         } else {
 
-            entity.setId(id);
             EntityManager entityManager = emf.createEntityManager();
+            
+            entity = prepararAtualizacao(entityManager, entity, id);
+            
             try {
                 entityManager.getTransaction().begin();
 
-                getDao().atualizar(entityManager, entity);
+                entity = getDao().atualizar(entityManager, entity);
 
                 entityManager.getTransaction().commit();
 
-                response = Response.noContent().build();
+                response = Response.ok(entity).build();
 
             } catch ( EntityNotFoundException ex){
                 throw new NotFoundException(ex);
@@ -232,7 +234,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         return builder.build();
     }
 
-    protected URI makeURI(E entity) {
+    private URI makeURI(E entity) {
         URI uri;
         
         try {
@@ -261,5 +263,13 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     }
 
     protected abstract Dao<E,Key> getDao();
+
+    protected E prepararAtualizacao(
+            final EntityManager entityManager, 
+            final E entity, 
+            final Key id) {
+        entity.setId(id);
+        return entity;
+    }
     
 }

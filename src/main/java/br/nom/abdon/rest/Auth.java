@@ -17,10 +17,8 @@
 package br.nom.abdon.rest;
 
 import java.security.GeneralSecurityException;
-import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
