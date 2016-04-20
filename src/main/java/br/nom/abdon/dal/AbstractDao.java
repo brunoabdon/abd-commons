@@ -50,10 +50,10 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>
     }
     
     @Override
-    public void atualizar(EntityManager em, E entity) throws DalException {
+    public E atualizar(EntityManager em, E entity) throws DalException {
         validarPraAtualizacao(em,entity);
         find(em, entity.getId());
-        em.merge(entity);
+        return em.merge(entity);
     }
 
     @Override

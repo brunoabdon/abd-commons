@@ -31,7 +31,7 @@ public interface Dao<E extends Entidade<K>,K> {
     
     public E criar(final EntityManager em, E entity) throws DalException;
     
-    public void atualizar(final EntityManager em, E entity) throws DalException;
+    public E atualizar(final EntityManager em, E entity) throws DalException;
     
     public void deletar(final EntityManager em, K key) throws DalException;
     
