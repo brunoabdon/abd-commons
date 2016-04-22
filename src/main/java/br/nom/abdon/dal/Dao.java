@@ -29,7 +29,7 @@ public interface Dao<E extends Entidade<K>,K> {
     
     public E find(EntityManager em, K key) throws DalException;
     
-    public E criar(final EntityManager em, E entity) throws DalException;
+    public void criar(final EntityManager em, E entity) throws DalException;
     
     public E atualizar(final EntityManager em, E entity) throws DalException;
     

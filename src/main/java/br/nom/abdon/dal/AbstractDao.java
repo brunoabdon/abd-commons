@@ -16,7 +16,11 @@
  */
 package br.nom.abdon.dal;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import br.nom.abdon.modelo.Entidade;
+
 import javax.persistence.EntityManager;
 
 /**
@@ -43,10 +47,9 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>
     }
 
     @Override
-    public E criar(EntityManager em, E entity) throws DalException {
+    public void criar(EntityManager em, E entity) throws DalException {
         validarPraCriacao(em,entity);
         em.persist(entity);
-        return entity;
     }
     
     @Override
