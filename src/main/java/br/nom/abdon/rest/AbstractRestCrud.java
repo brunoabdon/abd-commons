@@ -16,6 +16,8 @@
  */
 package br.nom.abdon.rest;
 
+import java.math.BigInteger;
+
 import br.nom.abdon.dal.DalException;
 import br.nom.abdon.dal.Dao;
 import br.nom.abdon.dal.EntityNotFoundException;
@@ -23,13 +25,13 @@ import br.nom.abdon.modelo.Entidade;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.SecureRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -40,7 +42,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
@@ -54,9 +55,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
-    private static final Logger LOG = 
+    private static final Logger log = 
         Logger.getLogger(AbstractRestCrud.class.getName());
 
+    private static final SecureRandom random = new SecureRandom();
+    
     protected static final Response ERROR_MISSING_ENTITY = 
         Response.status(Response.Status.BAD_REQUEST)
                 .entity("br.nom.abdon.rest.MISSING_ENTITY")
@@ -72,7 +75,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response criar(E entity) {
 
         Response response;
@@ -91,10 +93,23 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
                 entityManager.getTransaction().commit();
 
+                final URI uri = new URI(path + String.valueOf(entity.getId()));
+                
                 response = 
-                    Response.created(makeURI(entity)).entity(entity).build();
+                    Response.created(uri).entity(entity).build();
 
+            } catch (URISyntaxException ex) {
+                
+                final String errorCode = makeError();
+                
+                log.log(Level.SEVERE, ex, () -> "[" + errorCode + "]");
+                response = 
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                            .entity("Erro: " + errorCode)
+                            .build();
+                
             } catch (DalException e){
+                log.log(Level.FINE, "Erro ao tentar criar.", e);
                 response = 
                     Response.status(Response.Status.CONFLICT)
                             .entity(e.getMessage())
@@ -130,8 +145,12 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             response = builder.build();
             
         } catch ( EntityNotFoundException ex){
+            log.log(Level.FINE , 
+                    ex, 
+                    () -> "Not found " + id + " by " + getClass());
             throw new NotFoundException(ex);
         } catch (DalException ex) {
+            log.log(Level.FINE, "Erro ao tentar pegar.", ex);
             throw new WebApplicationException(
                 ex.getMessage(), 
                 Response.Status.BAD_REQUEST);
@@ -174,6 +193,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             } catch ( EntityNotFoundException ex){
                 throw new NotFoundException(ex);
             } catch (DalException e) {
+                log.log(Level.FINE, "Erro ao tentar atualizar.", e);
                 response =
                     Response.status(Response.Status.CONFLICT)
                             .entity(e.getMessage())
@@ -204,6 +224,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         } catch(EntityNotFoundException ex){
             throw new NotFoundException(ex);
         } catch (DalException e) {
+            log.log(Level.FINE, "Erro ao tentar deletar.", e);
             response =
                 Response.status(Response.Status.CONFLICT)
                         .entity(e.getMessage())
@@ -234,19 +255,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         return builder.build();
     }
 
-    private URI makeURI(E entity) {
-        URI uri;
-        
-        try {
-            uri = new URI(path + String.valueOf(entity.getId()));
-        } catch (URISyntaxException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-            uri = null;
-        }
-        return uri;
-    }
-    
-
     private EntityTag makeTag(
             final Object thing, final HttpHeaders httpHeaders) {
         
@@ -271,5 +279,8 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         entity.setId(id);
         return entity;
     }
-    
+
+    private String makeError() {
+        return new BigInteger(130, random).toString(32);
+    }
 }
