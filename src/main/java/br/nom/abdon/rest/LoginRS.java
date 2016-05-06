@@ -36,13 +36,12 @@ public class LoginRS {
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public AuthToken login(final String password){
+    public String login(final String password){
         
-        final AuthToken authToken;
+        final String strToken;
 
         try {
-            final String strToken = Auth.getInstance().login(password);
-            authToken = new AuthToken(strToken);
+            strToken = Auth.getInstance().login(password);
             
         } catch (GeneralSecurityException ex){
             throw new WebApplicationException(
@@ -50,14 +49,7 @@ public class LoginRS {
                 Response.Status.UNAUTHORIZED);
         }
         
-        return authToken;
+        return "{\"token\":\""+strToken+"\"}";
     }
     
-    public class AuthToken {
-        public final String token;
-
-        public AuthToken(final String token) {
-            this.token = token;
-        }
-    }
 }
