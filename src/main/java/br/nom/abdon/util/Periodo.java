@@ -47,5 +47,4 @@ public class Periodo {
     public void setDataMaxima(final LocalDate dataMaxima) {
         this.dataMaxima = dataMaxima;
     }
-    
 }

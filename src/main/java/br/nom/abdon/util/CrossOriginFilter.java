@@ -154,13 +154,13 @@ public class CrossOriginFilter implements Filter {
                 }
                 else
                 {
-                    log.log(Level.FINEST,"Cross-origin request to {} is a non-simple cross-origin request", request.getRequestURI());
+                    log.log(Level.FINEST,"Cross-origin request to {0} is a non-simple cross-origin request", request.getRequestURI());
                     handleSimpleResponse(request, response, origin);
                 }
             }
             else
             {
-                log.log(Level.FINEST,"Cross-origin request to " + request.getRequestURI() + " with origin " + origin + " does not match allowed origins " + allowedOrigins);
+                log.log(Level.FINEST, "Cross-origin request to {0} with origin {1} does not match allowed origins {2}", new Object[]{request.getRequestURI(), origin, allowedOrigins});
             }
         }
 
