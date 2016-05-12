@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
  * @author bruno
  */
 @MappedSuperclass
-public class EntidadeBaseInt implements Entidade<Integer>{
+public class EntidadeBaseInt implements Entidade<Integer> {
  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
