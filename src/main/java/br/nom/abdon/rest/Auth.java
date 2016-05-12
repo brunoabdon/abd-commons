@@ -35,7 +35,7 @@ public class Auth {
     
     private Auth(){    
         this.currentAuthorizations =
-            System.getenv("ABD_AUTH_OMNI_EST_LICET") == null
+            !Boolean.parseBoolean(System.getenv("ABD_AUTH_OMNI_EST_LICET"))
                 ? new HashSet<>()
                 : new HashSet<String>() {
                         @Override
