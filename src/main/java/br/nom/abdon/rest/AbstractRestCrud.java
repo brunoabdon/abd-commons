@@ -93,8 +93,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
                 dao.criar(entityManager, entity);
 
-                entityManager.refresh(entity);
-                
                 entityManager.getTransaction().commit();
 
                 final URI uri = new URI(path + String.valueOf(entity.getId()));
