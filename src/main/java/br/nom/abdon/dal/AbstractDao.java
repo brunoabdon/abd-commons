@@ -16,7 +16,6 @@
  */
 package br.nom.abdon.dal;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import br.nom.abdon.modelo.Entidade;
@@ -31,6 +30,9 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>{
 
+    private static final Logger LOG = 
+        Logger.getLogger(AbstractDao.class.getName());
+    
     private final Class<E> klass;
 
     public AbstractDao(Class<E> klass) {
@@ -48,12 +50,14 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>
 
     @Override
     public void criar(EntityManager em, E entity) throws DalException {
+        LOG.finest(() -> "Criando " + entity);
         validarPraCriacao(em,entity);
         em.persist(entity);
     }
     
     @Override
     public E atualizar(EntityManager em, E entity) throws DalException {
+        LOG.finest(() -> "Atualizando " + entity);
         validarPraAtualizacao(em,entity);
         find(em, entity.getId());
         return em.merge(entity);
@@ -61,6 +65,7 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>
 
     @Override
     public void deletar(EntityManager em, K key) throws DalException{
+        LOG.finest(() -> "Deletando id " + key);
         final E entity = find(em, key);
         prepararDelecao(em,entity);
         em.remove(entity);
