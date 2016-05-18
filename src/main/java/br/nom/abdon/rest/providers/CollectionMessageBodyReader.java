@@ -68,7 +68,6 @@ public abstract class CollectionMessageBodyReader<E>
             final Annotation[] annotations, 
             final MediaType mediaType) {
 
-
         final ParameterizedType pt = (ParameterizedType)genericType;
         final Type t = pt.getActualTypeArguments()[0];
         final Class entityClass = 
