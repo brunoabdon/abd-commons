@@ -49,7 +49,7 @@ public abstract class CollectionMessageBodyReader<E>
             final Class<E> elementType,
             final Supplier<Collection<E>> collectionSupplier,
             final JsonFactory jsonFactory){
-        this .collectionSupplier =  collectionSupplier;
+        this.collectionSupplier =  collectionSupplier;
         this.elementType = elementType;
         this.jsonFactory = jsonFactory;
     }
