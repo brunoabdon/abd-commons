@@ -28,19 +28,19 @@ import javax.persistence.EntityManager;
  * @param <E> o tipo da entidade persistida
  * @param <K> o tipo da chave da entidade
  */
-public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>{
+public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E,K>{
 
     private static final Logger LOG = 
         Logger.getLogger(AbstractDao.class.getName());
     
     private final Class<E> klass;
 
-    public AbstractDao(Class<E> klass) {
+    public AbstractDao(final Class<E> klass) {
         this.klass = klass;
     }
     
     @Override
-    public E find(EntityManager em, K key) throws DalException{
+    public E find(final EntityManager em, final K key) throws DalException{
         E entity = em.find(klass, key);
         if(entity == null){
             throw new EntityNotFoundException(key);
@@ -49,14 +49,16 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>
     }
 
     @Override
-    public void criar(EntityManager em, E entity) throws DalException {
+    public void criar(final EntityManager em, final E entity) 
+            throws DalException {
         LOG.finest(() -> "Criando " + entity);
         validarPraCriacao(em,entity);
         em.persist(entity);
     }
     
     @Override
-    public E atualizar(EntityManager em, E entity) throws DalException {
+    public E atualizar(final EntityManager em, final E entity) 
+            throws DalException {
         LOG.finest(() -> "Atualizando " + entity);
         validarPraAtualizacao(em,entity);
         find(em, entity.getId());
@@ -64,27 +66,29 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E, K>
     }
 
     @Override
-    public void deletar(EntityManager em, K key) throws DalException{
+    public void deletar(final EntityManager em, final K key) 
+            throws DalException {
         LOG.finest(() -> "Deletando id " + key);
         final E entity = find(em, key);
         prepararDelecao(em,entity);
         em.remove(entity);
     }
 
-    protected void validarPraCriacao(EntityManager em, E entity) 
+    protected void validarPraCriacao(final EntityManager em, final E entity) 
             throws DalException{
         validar(em,entity);
     }
 
-    protected void validarPraAtualizacao(EntityManager em, E entity) 
+    protected void validarPraAtualizacao(final EntityManager em, final E entity) 
             throws DalException{
         validar(em,entity);
     }
 
-    protected void validar(EntityManager em, E entity) throws DalException{
+    protected void validar(final EntityManager em, final E entity) 
+            throws DalException {
     };
 
-    protected void prepararDelecao(EntityManager em, E entity) 
-            throws DalException{
+    protected void prepararDelecao(final EntityManager em, final E entity) 
+            throws DalException {
     };
 }
