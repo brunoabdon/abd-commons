@@ -39,37 +39,37 @@ public class Auth {
                 ? new HashSet<>()
                 : new HashSet<String>() {
                         @Override
-                        public boolean add(String e) {return false;}
+                        public boolean add(final String e) {return false;}
 
                         @Override
-                        public boolean remove(Object o) {return false;}
+                        public boolean remove(final Object o) {return false;}
 
                         @Override
-                        public boolean contains(Object o) {return true;}
+                        public boolean contains(final Object o) {return true;}
                     };
     }
-    
+
     public static Auth getInstance(){
         return INSTANCE;
     }
-    
+
     public String login(final String password) throws GeneralSecurityException{
-        
+
         final String md5pass = DigestUtils.md5Hex(password);
   
         if(!"cbb72318565824672fdb2b7b4c84df20".equals(md5pass)){
             throw new GeneralSecurityException();
         }
-        
+
         final String authToken = UUID.randomUUID().toString();
         currentAuthorizations.add(authToken);
         return authToken;
     }
-    
+
     public boolean isValid(final String authToken){
         return currentAuthorizations.contains(authToken);
     }
-    
+
     public void logout(final String authToken){
         currentAuthorizations.remove(authToken);
     }

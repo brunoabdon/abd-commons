@@ -64,31 +64,30 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         Response.status(Response.Status.BAD_REQUEST)
                 .entity("br.nom.abdon.rest.MISSING_ENTITY")
                 .build();
-    
+
     @PersistenceUnit(unitName = "gastoso_peruni")
     protected EntityManagerFactory emf;
 
     private final String path;
-    
-    public AbstractRestCrud(String path) {
+
+    public AbstractRestCrud(final String path) {
         this.path = path + "/" ;
     }
 
     @POST
-    public Response criar(E entity) {
+    public Response criar(final E entity) {
 
         Response response;
 
         if(entity == null){
             response = ERROR_MISSING_ENTITY;
-            
         } else {
 
             final EntityManager entityManager = emf.createEntityManager();
             try {
 
                 entityManager.getTransaction().begin();
-                
+
                 final Dao<E, Key> dao = getDao();
 
                 dao.criar(entityManager, entity);
@@ -96,20 +95,20 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 entityManager.getTransaction().commit();
 
                 final URI uri = new URI(path + String.valueOf(entity.getId()));
-                
+
                 response = 
                     Response.created(uri).entity(entity).build();
 
             } catch (URISyntaxException ex) {
-                
+
                 final String errorCode = makeError();
-                
+
                 log.log(Level.SEVERE, ex, () -> "[" + errorCode + "]");
                 response = 
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                             .entity("Erro: " + errorCode)
                             .build();
-                
+
             } catch (DalException e){
                 log.log(Level.FINE, "Erro ao tentar criar.", e);
                 response = 
@@ -122,7 +121,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         }
         return response;
     }
-    
+
     @GET
     @Path("{id}")
     public Response pegar(
@@ -131,11 +130,11 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             final @Context HttpHeaders httpHeaders){
 
         final Response response;
-        
+
         final EntityManager entityManager = emf.createEntityManager();
         try {
             final E entity = getEntity(entityManager, id);
-            
+
             EntityTag tag =  makeTag(entity, httpHeaders);
             Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
             if(builder==null){
@@ -145,7 +144,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 		builder.tag(tag);
             }
             response = builder.build();
-            
+
         } catch ( EntityNotFoundException ex){
             log.log(Level.FINE , 
                     ex, 
@@ -170,20 +169,21 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
     @POST
     @Path("{id}")
-    public Response atualizar(@PathParam("id") Key id, E entity){
-        
+    public Response atualizar(final @PathParam("id") Key id, E entity) {
+
         Response response;
-        
+
         if(entity == null){
             response = ERROR_MISSING_ENTITY;
-            
+
         } else {
 
-            EntityManager entityManager = emf.createEntityManager();
-            
-            entity = prepararAtualizacao(entityManager, entity, id);
-            
+            final EntityManager entityManager = emf.createEntityManager();
+
             try {
+
+                entity = prepararAtualizacao(entityManager, entity, id);
+
                 entityManager.getTransaction().begin();
 
                 entity = getDao().atualizar(entityManager, entity);
@@ -206,14 +206,14 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         }
         return response;
     }
-    
+
     @DELETE
     @Path("{id}")
     public Response deletar(@PathParam("id") Key id) {
 
         Response response;
-        
-        EntityManager entityManager = emf.createEntityManager();
+
+        final EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
 
@@ -242,7 +242,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             final Request request, 
             final HttpHeaders headers,
             final Object entity){
-        
+
         final EntityTag tag = makeTag(entity, headers);
 
         Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
@@ -259,7 +259,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
     private EntityTag makeTag(
             final Object thing, final HttpHeaders httpHeaders) {
-        
+
         final String accept = httpHeaders.getHeaderString(HttpHeaders.ACCEPT);
 
         final int hashCode = 
@@ -269,7 +269,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 .toHashCode();
         
         return new EntityTag(Integer.toString(hashCode));
-
     }
 
     protected abstract Dao<E,Key> getDao();

@@ -37,11 +37,12 @@ public class AuthorizationFilter implements ContainerRequestFilter{
         Logger.getLogger(AuthorizationFilter.class.getName());
  
     @Override
-    public void filter(final ContainerRequestContext requestCtx) throws IOException {
+    public void filter(final ContainerRequestContext requestCtx) 
+            throws IOException {
  
         final String path = requestCtx.getUriInfo().getPath();
         LOG.log(Level.FINEST, "Filtering request path: {0}", path);
-        
+
         // IMPORTANT!!! First, Acknowledge any pre-flight test from browsers for 
         // this case before validating the headers (CORS stuff)
         if ( requestCtx.getRequest().getMethod().equals( "OPTIONS" ) ) {
@@ -49,7 +50,7 @@ public class AuthorizationFilter implements ContainerRequestFilter{
         } else if (!path.equals("login")) {
             final String authToken = 
                 requestCtx.getHeaderString( "X-Abd-auth_token" );
- 
+
             // if it isn't valid, just kick them out.
             if ( !Auth.getInstance().isValid(authToken)) {
                 final Response response = 
