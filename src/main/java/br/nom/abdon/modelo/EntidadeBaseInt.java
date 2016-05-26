@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class EntidadeBaseInt implements Entidade<Integer> {
- 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,12 +26,13 @@ public class EntidadeBaseInt implements Entidade<Integer> {
         this.id = id;
     }
 
-    public static <X extends EntidadeBaseInt> X fromString(Class<X> klass, String str){
+    public static <X extends EntidadeBaseInt> X fromString(
+            final Class<X> klass, final String str) {
         final X entidade;
 
         try {
             final int id = Integer.parseInt(str);
-        
+
             entidade = klass.newInstance();
             entidade.setId(id);
         } catch (InstantiationException 

@@ -28,13 +28,12 @@ public class LocalDateTimePersistenceConverter
     implements AttributeConverter<LocalDateTime,Timestamp>{
 
     @Override
-    public Timestamp convertToDatabaseColumn(LocalDateTime localDateTime) {
+    public Timestamp convertToDatabaseColumn(final LocalDateTime localDateTime){
         return java.sql.Timestamp.valueOf(localDateTime);
     }
 
     @Override
-    public LocalDateTime convertToEntityAttribute(Timestamp timestamp) {
+    public LocalDateTime convertToEntityAttribute(final Timestamp timestamp) {
         return timestamp.toLocalDateTime();
     }
-    
 }

@@ -24,8 +24,8 @@ public class EntityNotFoundException extends DalException{
 
     private static final String ERRO_NOT_FOUND = "br.nom.abdon.dal.NOT_FOUND";
     
-    public EntityNotFoundException(Object param) {
-        super(ERRO_NOT_FOUND,param);
+    public EntityNotFoundException(final Object ... params) {
+        super(ERRO_NOT_FOUND,params);
     }
     
     

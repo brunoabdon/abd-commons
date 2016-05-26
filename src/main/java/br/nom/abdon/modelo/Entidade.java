@@ -11,6 +11,6 @@ import br.nom.abdon.util.Identifiable;
  * @param <Key>
  */
 public interface Entidade<Key> extends Identifiable<Key>, Serializable {
-    
+
     public void setId(Key id);
 }

@@ -26,14 +26,15 @@ import javax.persistence.EntityManager;
  * @param <K> o tipo da chave da entidade
  */
 public interface Dao<E extends Entidade<K>,K> {
-    
-    public E find(EntityManager em, K key) throws DalException;
-    
-    public void criar(final EntityManager em, E entity) throws DalException;
-    
-    public E atualizar(final EntityManager em, E entity) throws DalException;
-    
-    public void deletar(final EntityManager em, K key) throws DalException;
-    
-    
+
+    public E find(final EntityManager em, final K key) throws DalException;
+
+    public void criar(final EntityManager em, final E entity)
+            throws DalException;
+
+    public E atualizar(final EntityManager em, final E entity) 
+            throws DalException;
+
+    public void deletar(final EntityManager em, final K key) 
+            throws DalException;
 }

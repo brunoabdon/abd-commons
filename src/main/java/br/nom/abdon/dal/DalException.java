@@ -21,14 +21,14 @@ package br.nom.abdon.dal;
  * @author Bruno Abdon
  */
 public class DalException extends Exception {
-    
+
     private Object[] params;
 
     public DalException(final String message) {
         super(message);
     }
 
-    public DalException(String message, Object ... params) {
+    public DalException(final String message, final Object ... params) {
         this(message);
         this.params = params;
     }
@@ -36,6 +36,4 @@ public class DalException extends Exception {
     public Object[] getParams() {
         return params;
     }
-
-
 }
