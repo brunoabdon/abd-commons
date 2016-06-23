@@ -108,19 +108,14 @@ public class CrossOriginFilter implements Filter {
             Level.INFO,"{0} = {1}", new
             Object[]{ABD_HTTP_ALLOWED_ORIGINS_ENVVAR, allowedOriginsConfig});
 
-        for (String allowedOrigin : allowedOriginsArray)
-        {
+        for (String allowedOrigin : allowedOriginsArray){
             allowedOrigin = allowedOrigin.trim();
-            if (allowedOrigin.length() > 0)
-            {
-                if (ANY_ORIGIN.equals(allowedOrigin))
-                {
+            if (allowedOrigin.length() > 0){
+                if (ANY_ORIGIN.equals(allowedOrigin)){
                     anyOriginAllowed = true;
                     this.allowedOrigins.clear();
                     break;
-                }
-                else
-                {
+                } else {
                     this.allowedOrigins.add(allowedOrigin);
                 }
             }
@@ -129,31 +124,28 @@ public class CrossOriginFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
-    {
-        handle((HttpServletRequest)request, (HttpServletResponse)response, chain);
-    }
+    public void doFilter(
+        final ServletRequest servletReq, 
+        final ServletResponse servletRes, 
+        final FilterChain chain) 
+            throws IOException, ServletException{
 
-    private void handle(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException
-    {
+        final HttpServletRequest request = (HttpServletRequest) servletReq;
+        final HttpServletResponse response = (HttpServletResponse) servletRes;
+        
         String origin = request.getHeader(ORIGIN_HEADER);
         // Is it a cross origin request ?
-        if (origin != null && isEnabled(request))
-        {
-            if (originMatches(origin))
-            {
-                if (isSimpleRequest(request))
-                {
+        if (origin != null && isEnabled(request)) {
+            if (originMatches(origin)) {
+                if (isSimpleRequest(request)) {
                     log.log(Level.FINEST,"Cross-origin request to {} is a simple cross-origin request", request.getRequestURI());
                     handleSimpleResponse(request, response, origin);
-                }
-                else if (isPreflightRequest(request))
-                {
+
+                } else if (isPreflightRequest(request)) {
                     log.log(Level.FINEST,"Cross-origin request to {} is a preflight cross-origin request", request.getRequestURI());
                     handlePreflightResponse(request, response, origin);
-                }
-                else
-                {
+
+                } else {
                     log.log(Level.FINEST,"Cross-origin request to {0} is a non-simple cross-origin request", request.getRequestURI());
                     handleSimpleResponse(request, response, origin);
                 }

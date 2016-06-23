@@ -15,6 +15,4 @@ public class LocalDateISO8601Serializer extends LocalDateSerializer{
     public LocalDateISO8601Serializer(){
         super(DateTimeFormatter.ISO_LOCAL_DATE);
     }
-    
-    
 }
