@@ -238,6 +238,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         return response;
     }
 
+    //nao precisava ser no 'crud' esse metodo.
     protected Response buildResponse(
             final Request request, 
             final HttpHeaders headers,
