@@ -58,7 +58,6 @@ public class AbstractRestClient <T extends Throwable> implements Closeable{
     private Client client;
 
     public AbstractRestClient(
-        
         final MediaType sendMediaType, 
         final MediaType receiveMediaType,
         final ThrowingFunction<RESTResponseException,Response,T> exDealer) {
