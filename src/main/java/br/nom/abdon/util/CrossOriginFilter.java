@@ -43,31 +43,41 @@ import org.apache.commons.lang3.StringUtils;
 
 public class CrossOriginFilter implements Filter {
 
-    private static final Logger log = Logger.getLogger(CrossOriginFilter.class.getName());
+    private static final Logger log = 
+        Logger.getLogger(CrossOriginFilter.class.getName());
     
     // Request headers
     private static final String ORIGIN_HEADER = "Origin";
-    private static final String ACCESS_CONTROL_REQUEST_METHOD_HEADER = "Access-Control-Request-Method";
-    private static final String ACCESS_CONTROL_REQUEST_HEADERS_HEADER = "Access-Control-Request-Headers";
+    private static final String ACCESS_CONTROL_REQUEST_METHOD_HEADER = 
+        "Access-Control-Request-Method";
+    private static final String ACCESS_CONTROL_REQUEST_HEADERS_HEADER = 
+        "Access-Control-Request-Headers";
     // Response headers
-    private static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
-    private static final String ACCESS_CONTROL_ALLOW_METHODS_HEADER = "Access-Control-Allow-Methods";
-    private static final String ACCESS_CONTROL_ALLOW_HEADERS_HEADER = "Access-Control-Allow-Headers";
-    private static final String ACCESS_CONTROL_MAX_AGE_HEADER = "Access-Control-Max-Age";
-    private static final String ACCESS_CONTROL_ALLOW_CREDENTIALS_HEADER = "Access-Control-Allow-Credentials";
+    private static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = 
+        "Access-Control-Allow-Origin";
+    private static final String ACCESS_CONTROL_ALLOW_METHODS_HEADER = 
+        "Access-Control-Allow-Methods";
+    private static final String ACCESS_CONTROL_ALLOW_HEADERS_HEADER = 
+        "Access-Control-Allow-Headers";
+    private static final String ACCESS_CONTROL_MAX_AGE_HEADER =
+        "Access-Control-Max-Age";
+    private static final String ACCESS_CONTROL_ALLOW_CREDENTIALS_HEADER =
+        "Access-Control-Allow-Credentials";
     
     // ENV CONFIG
-    private static final String ABD_HTTP_ALLOWED_ORIGINS_ENVVAR = "ABD_HTTP_ALLOWED_ORIGINS";
+    private static final String ABD_HTTP_ALLOWED_ORIGINS_ENVVAR = 
+        "ABD_HTTP_ALLOWED_ORIGINS";
     
     // Implementation constants
     private static final String ANY_ORIGIN = "*";
-    private static final List<String> SIMPLE_HTTP_METHODS = Arrays.asList("GET", "POST", "HEAD");
+    private static final List<String> SIMPLE_HTTP_METHODS = 
+        Arrays.asList("GET", "POST", "HEAD");
 
-    private static final Set<String> allowedMethods = new HashSet<>(
+    private static final Set<String> ALLOWED_METHODS = new HashSet<>(
         Arrays.asList("GET","POST","PUT","HEAD","OPTIONS","DELETE")
     );
             
-    private static final Set<String> allowedHeaders = new HashSet<>(
+    private static final Set<String> ALLOWED_HEADERS = new HashSet<>(
         Arrays.asList(
             "Accept",
             "Accept-Encoding",
@@ -80,33 +90,38 @@ public class CrossOriginFilter implements Filter {
             "X-Requested-With")
     );
 
-    private static final String preflightMaxAge = "1800";
+    private static final String PRE_FLIGHT_MAX_AGE = "1800";
 
-    private static final String commifiedAllowedMethods = 
-        StringUtils.join(allowedMethods, ',');
+    private static final String COMMIFIED_ALLOWED_METHODS = 
+        StringUtils.join(ALLOWED_METHODS, ',');
     
-    private static final String commifiedAllowedHeaders = 
-        StringUtils.join(allowedHeaders, ',');
+    private static final String COMMIFIED_ALLOWED_HEADERS = 
+        StringUtils.join(ALLOWED_HEADERS, ',');
     
     private boolean anyOriginAllowed;
     private final List<String> allowedOrigins = new ArrayList<>();
 
     @Override
-    public void init(FilterConfig config) throws ServletException
+    public void init(final FilterConfig config) throws ServletException
     {
         final String allowedOriginsConfig = 
             System.getenv(ABD_HTTP_ALLOWED_ORIGINS_ENVVAR);
         
         if (allowedOriginsConfig == null) {
             throw new ServletException(
-                "Env var " + ABD_HTTP_ALLOWED_ORIGINS_ENVVAR + " não configurada");
+                "Env var " 
+                + ABD_HTTP_ALLOWED_ORIGINS_ENVVAR 
+                + " não configurada"
+            );
         }
         
         final String[] allowedOriginsArray = allowedOriginsConfig.split(",");
 
         log.log(
-            Level.INFO,"{0} = {1}", new
-            Object[]{ABD_HTTP_ALLOWED_ORIGINS_ENVVAR, allowedOriginsConfig});
+            Level.INFO,
+            "{0} = {1}", 
+            new Object[]{ABD_HTTP_ALLOWED_ORIGINS_ENVVAR, allowedOriginsConfig}
+        );
 
         for (String allowedOrigin : allowedOriginsArray){
             allowedOrigin = allowedOrigin.trim();
@@ -138,41 +153,56 @@ public class CrossOriginFilter implements Filter {
         if (origin != null && isEnabled(request)) {
             if (originMatches(origin)) {
                 if (isSimpleRequest(request)) {
-                    log.log(Level.FINEST,"Cross-origin request to {} is a simple cross-origin request", request.getRequestURI());
+                    log.log(
+                        Level.FINEST,
+                        "Simple CORS request to {0}", 
+                        request.getRequestURI()
+                    );
                     handleSimpleResponse(request, response, origin);
 
                 } else if (isPreflightRequest(request)) {
-                    log.log(Level.FINEST,"Cross-origin request to {} is a preflight cross-origin request", request.getRequestURI());
+                    log.log(
+                        Level.FINEST,"Preflight CORS request to {0}.",
+                        request.getRequestURI()
+                    );
                     handlePreflightResponse(request, response, origin);
 
                 } else {
-                    log.log(Level.FINEST,"Cross-origin request to {0} is a non-simple cross-origin request", request.getRequestURI());
+                    log.log(
+                        Level.FINEST,
+                        "Non-simple CORS request to {0}.", 
+                        request.getRequestURI()
+                    );
                     handleSimpleResponse(request, response, origin);
                 }
-            }
-            else
-            {
-                log.log(Level.FINEST, "Cross-origin request to {0} with origin {1} does not match allowed origins {2}", new Object[]{request.getRequestURI(), origin, allowedOrigins});
+            } else {
+                log.log(
+                    Level.FINEST, 
+                    "CORS request {1}->{0} does not match allowed origins {2}", 
+                    new Object[]{
+                        request.getRequestURI(), 
+                        origin, 
+                        allowedOrigins
+                    }
+                );
             }
         }
 
         chain.doFilter(request, response);
     }
 
-    protected boolean isEnabled(HttpServletRequest request)
-    {
-        // WebSocket clients such as Chrome 5 implement a version of the WebSocket
-        // protocol that does not accept extra response headers on the upgrade response
-        for (Enumeration connections = request.getHeaders("Connection"); connections.hasMoreElements();)
-        {
-            String connection = (String)connections.nextElement();
-            if ("Upgrade".equalsIgnoreCase(connection))
-            {
-                for (Enumeration upgrades = request.getHeaders("Upgrade"); upgrades.hasMoreElements();)
-                {
-                    String upgrade = (String)upgrades.nextElement();
-                    if ("WebSocket".equalsIgnoreCase(upgrade))
-                        return false;
+    protected boolean isEnabled(HttpServletRequest request) {
+        //WebSocket clients such as Chrome 5 implement a version of the 
+        //WebSocket protocol that does not accept extra response headers on the 
+        //upgrade response
+        final Enumeration connections = request.getHeaders("Connection");
+        while (connections.hasMoreElements()) {
+            final String connection = (String)connections.nextElement();
+            if ("Upgrade".equalsIgnoreCase(connection)) {
+                final Enumeration upgrades = request.getHeaders("Upgrade");
+                while (upgrades.hasMoreElements()) {
+                    final String upgrade = (String)upgrades.nextElement();
+                    if ("WebSocket".equalsIgnoreCase(upgrade)) return false;
                 }
             }
         }
@@ -229,69 +259,84 @@ public class CrossOriginFilter implements Filter {
         if (SIMPLE_HTTP_METHODS.contains(method))
         {
             // TODO: implement better detection of simple headers
-            // The specification says that for a request to be simple, custom request headers must be simple.
-            // Here for simplicity I just check if there is a Access-Control-Request-Method header,
+            // The specification says that for a request to be simple, custom 
+            // request headers must be simple.
+            // Here for simplicity I just check if there is a 
+            // Access-Control-Request-Method header,
             // which is required for preflight requests
-            return request.getHeader(ACCESS_CONTROL_REQUEST_METHOD_HEADER) == null;
+            return request
+                    .getHeader(ACCESS_CONTROL_REQUEST_METHOD_HEADER) == null;
         }
         return false;
     }
 
-    private boolean isPreflightRequest(HttpServletRequest request)
-    {
+    private boolean isPreflightRequest(HttpServletRequest request) {
         return 
             "OPTIONS".equalsIgnoreCase(request.getMethod())
             && request.getHeader(ACCESS_CONTROL_REQUEST_METHOD_HEADER) != null;
     }
 
-    private void handleSimpleResponse(HttpServletRequest request, HttpServletResponse response, String origin)
-    {
+    private void handleSimpleResponse(
+        final HttpServletRequest request, 
+        final HttpServletResponse response, 
+        final String origin) {
+        
         log.log(Level.FINEST,"handling simple respnse");
         
         response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, origin);
         response.setHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS_HEADER, "true");
     }
 
-    private void handlePreflightResponse(HttpServletRequest request, HttpServletResponse response, String origin)
-    {
+    private void handlePreflightResponse(
+            final HttpServletRequest request, 
+            final HttpServletResponse response, 
+            final String origin) {
+        
         log.log(Level.FINEST,"handling preflight");
         
-        boolean methodAllowed = isMethodAllowed(request);
-        if (!methodAllowed)
-            return;
-        boolean headersAllowed = areHeadersAllowed(request);
-        if (!headersAllowed)
-            return;
+        if (!isMethodAllowed(request) || !areHeadersAllowed(request)) return;
+
         response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, origin);
         response.setHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS_HEADER, "true");
-        response.setHeader(ACCESS_CONTROL_MAX_AGE_HEADER, preflightMaxAge);
-        response.setHeader(ACCESS_CONTROL_ALLOW_METHODS_HEADER, commifiedAllowedMethods);
-        response.setHeader(ACCESS_CONTROL_ALLOW_HEADERS_HEADER, commifiedAllowedHeaders);
+        response.setHeader(ACCESS_CONTROL_MAX_AGE_HEADER, PRE_FLIGHT_MAX_AGE);
+        response.setHeader(
+            ACCESS_CONTROL_ALLOW_METHODS_HEADER, 
+            COMMIFIED_ALLOWED_METHODS
+        );
+        response.setHeader(
+            ACCESS_CONTROL_ALLOW_HEADERS_HEADER, 
+            COMMIFIED_ALLOWED_HEADERS
+        );
     }
 
-    private boolean isMethodAllowed(HttpServletRequest request)
+    private boolean isMethodAllowed(final HttpServletRequest request)
     {
         final String accessControlRequestMethod = 
             request.getHeader(ACCESS_CONTROL_REQUEST_METHOD_HEADER);
+        
         log.log(Level.FINEST,
             "{0} is {1}", 
             new Object[]{
                 ACCESS_CONTROL_REQUEST_METHOD_HEADER, 
-                accessControlRequestMethod});
+                accessControlRequestMethod}
+        );
+        
         final boolean result = 
                 accessControlRequestMethod != null
-                && allowedMethods.contains(accessControlRequestMethod);
+                && ALLOWED_METHODS.contains(accessControlRequestMethod);
+        
         log.log(Level.FINEST,
                 "Method {0} is {1} among allowed methods {2}", 
                 new Object[]{
                     accessControlRequestMethod, 
                     (result ? "" : " not"),
-                    allowedMethods});
+                    ALLOWED_METHODS}
+        );
         return result;
     }
 
-    private boolean areHeadersAllowed(HttpServletRequest request)
-    {
+    private boolean areHeadersAllowed(final HttpServletRequest request) {
+        
         final String accessControlRequestHeaders = 
             request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS_HEADER);
         
@@ -308,17 +353,16 @@ public class CrossOriginFilter implements Filter {
             .map(String::trim)
             .allMatch(
                 providedHeader ->  
-                    allowedHeaders
+                    ALLOWED_HEADERS
                     .parallelStream()
                     .anyMatch(providedHeader::equalsIgnoreCase));
     }
 
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         anyOriginAllowed = false;
         allowedOrigins.clear();
-        allowedMethods.clear();
-        allowedHeaders.clear();
+        ALLOWED_METHODS.clear();
+        ALLOWED_HEADERS.clear();
     }
 }
