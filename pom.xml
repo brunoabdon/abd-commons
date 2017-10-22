@@ -22,6 +22,14 @@
         </license>
     </licenses>  
 
+    <developers>
+        <developer>
+            <name>Bruno Abdon</name>
+            <organization>Abdonia</organization>
+            <organizationUrl>https://github.com/abdonia</organizationUrl>
+        </developer>
+    </developers>    
+
     <build>
         <plugins>
             <plugin>
