@@ -2,34 +2,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.brunoabdon</groupId>
-        <artifactId>abdonia</artifactId>
-        <version>1.0-SNAPSHOT</version>
-     </parent>
+		<groupId>com.github.brunoabdon.commons</groupId>
+		<artifactId>abd-commons</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+    </parent>
         
-    <groupId>com.github.brunoabdon</groupId>
     <artifactId>abd-commons-util</artifactId>
     <packaging>jar</packaging>
-    <version>1.1-SNAPSHOT</version>
 
     <name>abd-commons-util</name>
     <description>Very very basic Java utility lib for use on my own projects.</description>
     <url>https://github.com/brunoabdon/abd-commons-util</url>
 
-    <licenses>
-        <license>
-            <name>GNU General Public License, Version 3</name>
-            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
-        </license>
-    </licenses>  
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>sonatype</id>
-            <name>Sonatype Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -47,10 +31,4 @@
             <version>3.6</version>
         </dependency>
     </dependencies>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
 </project>
