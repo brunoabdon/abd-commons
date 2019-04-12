@@ -10,7 +10,7 @@
     <artifactId>abd-commons-rest</artifactId>
     <packaging>jar</packaging>
 
-    <name>abd-commons-rest</name>
+    <name>Abd-Commons - REST</name>
     <description>Very very basic Java lib for rest stuff on my own projects.</description>
     <url>https://github.com/brunoabdon/abd-commons-rest</url>
 

@@ -9,7 +9,7 @@
 
   <artifactId>abd-commons-dal</artifactId>
   <packaging>jar</packaging>
-  <name>abd-commons-dal</name>
+  <name>Abd-Commons - DAL</name>
   <description>Very very basic Java lib for data access layer on my own projects.</description>
   <url>https://github.com/brunoabdon/abd-commons-dal</url>
 
