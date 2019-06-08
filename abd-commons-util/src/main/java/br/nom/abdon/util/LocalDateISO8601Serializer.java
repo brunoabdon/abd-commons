@@ -13,6 +13,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 public class LocalDateISO8601Serializer extends LocalDateSerializer{
     
     private static final long serialVersionUID = 2850149492721026484L;
+    
 	public static final LocalDateISO8601Serializer INSTANCE = 
         new LocalDateISO8601Serializer();
     

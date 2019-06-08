@@ -6,7 +6,7 @@ import br.nom.abdon.util.Identifiable;
 
 
 /**
- * Um {@link Identifiable} cuja chave pode ser setada..
+ * Um {@link Identifiable} cuja chave pode ser setada.
  * 
  * @param <Key> O tipo da chave do identifiable.
  * 
