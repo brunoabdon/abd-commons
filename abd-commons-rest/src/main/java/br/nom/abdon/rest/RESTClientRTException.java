@@ -23,7 +23,9 @@ package br.nom.abdon.rest;
  */
 public class RESTClientRTException extends RuntimeException {
 
-    public static final int ERRO_GERAL = 0;
+    private static final long serialVersionUID = -8820735351630491384L;
+    
+	public static final int ERRO_GERAL = 0;
     public static final int SERVIDOR_FORA = 1;
     public static final int SERVIDOR_DESNORTEADO = 2;
     

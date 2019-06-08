@@ -17,12 +17,14 @@
 package br.nom.abdon.dal;
 
 /**
- *
+ * Exceção na camada de acesso a dados.
+ * 
  * @author Bruno Abdon
  */
 public class DalException extends Exception {
 
-    private Object[] params;
+    private static final long serialVersionUID = 5128378150540858893L;
+	private Object[] params;
 
     public DalException(final String message) {
         super(message);

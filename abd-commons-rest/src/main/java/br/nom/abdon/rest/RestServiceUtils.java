@@ -16,8 +16,6 @@
  */
 package br.nom.abdon.rest;
 
-import java.util.logging.Logger;
-
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
@@ -30,9 +28,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author Bruno Abdon
  */
 public class RestServiceUtils {
-
-    private static final Logger log = 
-        Logger.getLogger(RestServiceUtils.class.getName());
 
     public static Response buildResponse(
             final Request request, 

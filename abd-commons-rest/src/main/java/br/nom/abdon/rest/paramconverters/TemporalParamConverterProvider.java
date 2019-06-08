@@ -31,7 +31,8 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class TemporalParamConverterProvider implements ParamConverterProvider{
 
-    @Override
+	@Override
+    @SuppressWarnings("unchecked")
     public <T> ParamConverter<T> getConverter(
             final Class<T> rawType, 
             final Type genericType, 

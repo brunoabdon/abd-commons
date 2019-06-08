@@ -21,7 +21,8 @@ import java.time.YearMonth;
 /**
  * @author Bruno Abdon
  */
-public class YearMonthParamConverter extends AbstractTemporalParamConveter<YearMonth>{
+public class YearMonthParamConverter 
+			extends AbstractTemporalParamConveter<YearMonth>{
 
     public static final YearMonthParamConverter INSTANCE = 
         new YearMonthParamConverter();

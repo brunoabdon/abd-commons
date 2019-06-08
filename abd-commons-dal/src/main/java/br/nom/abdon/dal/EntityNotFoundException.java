@@ -17,12 +17,16 @@
 package br.nom.abdon.dal;
 
 /**
- *
+ * Exceção que indica que uma busca por chave não encontrou o elemento 
+ * procurado.
+ * 
  * @author Bruno Abdon
  */
 public class EntityNotFoundException extends DalException{
 
-    private static final String ERRO_NOT_FOUND = "br.nom.abdon.dal.NOT_FOUND";
+    private static final long serialVersionUID = 2789561489362885191L;
+    
+	private static final String ERRO_NOT_FOUND = "br.nom.abdon.dal.NOT_FOUND";
     
     public EntityNotFoundException(final Object ... params) {
         super(ERRO_NOT_FOUND,params);

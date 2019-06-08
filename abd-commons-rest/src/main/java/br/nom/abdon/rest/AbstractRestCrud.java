@@ -48,8 +48,10 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * @param <E>
- * @param <Key>
+ * Classe base para resources implementando operações básicas de CRUD.
+ * 
+ * @param <E> O tipo da  entidade criada, lida, atualizada e deletada.
+ * @param <Key> O tipo da chave do elemento.
  *
  * @author Bruno Abdon
  */

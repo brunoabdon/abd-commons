@@ -1,15 +1,19 @@
 package br.nom.abdon.util;
 
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 /**
- *
- * @author bruno
+ * {@link LocalDateSerializer} usando o formato <a 
+ * href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO 8601</a>.
+ * 
+ * @author bruno abdon
  */
 public class LocalDateISO8601Serializer extends LocalDateSerializer{
     
-    public static final LocalDateISO8601Serializer INSTANCE = 
+    private static final long serialVersionUID = 2850149492721026484L;
+	public static final LocalDateISO8601Serializer INSTANCE = 
         new LocalDateISO8601Serializer();
     
     public LocalDateISO8601Serializer(){

@@ -195,11 +195,11 @@ public class CrossOriginFilter implements Filter {
         //WebSocket clients such as Chrome 5 implement a version of the 
         //WebSocket protocol that does not accept extra response headers on the 
         //upgrade response
-        final Enumeration connections = request.getHeaders("Connection");
+        final Enumeration<?> connections = request.getHeaders("Connection");
         while (connections.hasMoreElements()) {
             final String connection = (String)connections.nextElement();
             if ("Upgrade".equalsIgnoreCase(connection)) {
-                final Enumeration upgrades = request.getHeaders("Upgrade");
+                final Enumeration<?> upgrades = request.getHeaders("Upgrade");
                 while (upgrades.hasMoreElements()) {
                     final String upgrade = (String)upgrades.nextElement();
                     if ("WebSocket".equalsIgnoreCase(upgrade)) return false;

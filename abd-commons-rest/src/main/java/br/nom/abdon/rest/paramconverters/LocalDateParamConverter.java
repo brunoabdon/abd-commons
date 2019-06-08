@@ -22,7 +22,8 @@ import java.time.LocalDate;
  *
  * @author Bruno Abdon
  */
-public class LocalDateParamConverter extends AbstractTemporalParamConveter<LocalDate>{
+public class LocalDateParamConverter 
+			extends AbstractTemporalParamConveter<LocalDate>{
 
     public static LocalDateParamConverter INSTANCE = 
         new LocalDateParamConverter();

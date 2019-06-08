@@ -17,9 +17,11 @@
 package br.nom.abdon.util;
 
 /**
- *
- * @author Bruno Abdon
+ * Um tipo identificável por uma chave.
+ * 
  * @param <Key> o tipo da chave da que identifica o elemento.
+ * @author Bruno Abdon
+ * 
  */
 public interface Identifiable<Key> {
     

@@ -6,13 +6,16 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- *
+ * Classe base pra {@link Entidade}s com {@link Entidade#getId() id} do tipo 
+ * {@link Integer}.
+ * 
  * @author bruno
  */
 @MappedSuperclass
 public class EntidadeBaseInt implements Entidade<Integer> {
 
-    @Id
+    private static final long serialVersionUID = 5533865547017401869L;
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

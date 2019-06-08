@@ -20,13 +20,17 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- *
+ * Classe base pra {@link Entidade}s com {@link Entidade#getId() id} do tipo 
+ * {@link String}.
+ * 
  * @author bruno
  */
 @MappedSuperclass
 public class EntidadeBaseString implements Entidade<String>{
 
-    @Id
+    private static final long serialVersionUID = 3764778963499113464L;
+    
+	@Id
     private String id;
 
     public EntidadeBaseString() {}

@@ -24,7 +24,9 @@ import javax.ws.rs.core.Response;
  */
 public class RESTResponseException extends Exception{
     
-    private Response.StatusType statusInfo;
+    private static final long serialVersionUID = -1782684932304834188L;
+    
+	private Response.StatusType statusInfo;
 
     public RESTResponseException(final Response.StatusType statusInfo) {
         super(statusInfo.getStatusCode() + " " + statusInfo.getReasonPhrase());

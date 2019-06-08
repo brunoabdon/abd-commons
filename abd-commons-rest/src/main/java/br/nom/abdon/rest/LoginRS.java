@@ -17,7 +17,7 @@
 package br.nom.abdon.rest;
 
 import java.security.GeneralSecurityException;
-import java.util.logging.Logger;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,8 +31,6 @@ import javax.ws.rs.core.Response;
  */
 @Path("login")
 public class LoginRS {
-    
-    private static final Logger log = Logger.getLogger(LoginRS.class.getName());
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)

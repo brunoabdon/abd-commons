@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon
+ * Copyright (C) 2019 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,10 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 
 /**
+ * Classe base pra {@link MessageBodyReader}s de {@link Collection}s.
  *
- * @author Bruno Abdon
  * @param <E> o tipo da entidade da colecao.
+ * @author Bruno Abdon
  */
 public abstract class CollectionMessageBodyReader<E> 
         implements MessageBodyReader<Collection<E>>{
@@ -60,7 +61,6 @@ public abstract class CollectionMessageBodyReader<E>
         this(elementType,ArrayList::new,jsonFactory);
     }
     
-    
     @Override
     public boolean isReadable(
             final Class<?> type, 
@@ -70,10 +70,10 @@ public abstract class CollectionMessageBodyReader<E>
 
         final ParameterizedType pt = (ParameterizedType)genericType;
         final Type t = pt.getActualTypeArguments()[0];
-        final Class entityClass = 
+        final Class<?> entityClass = 
             (t instanceof Class) 
-                ? (Class)t 
-                : (Class)((ParameterizedType)t).getRawType();
+                ? (Class<?>)t 
+                : (Class<?>)((ParameterizedType)t).getRawType();
         return 
             Collection.class.isAssignableFrom(type)
             && elementType.isAssignableFrom(entityClass);
@@ -118,13 +118,15 @@ public abstract class CollectionMessageBodyReader<E>
      * that the last entity has already been read (or there were no entities to
      * begin with). The method must return <code>null</code> in such cases.
      * 
-     * @param annotations
-     * @param mediaType
-     * @param httpHeaders
-     * @param jParser
+     * @param annotations from {@link MessageBodyReader#readFrom}.
+     * @param mediaType from {@link MessageBodyReader#readFrom}.
+     * @param httpHeaders from {@link MessageBodyReader#readFrom}.
+     * @param jParser from {@link MessageBodyReader#readFrom}.
+     * 
      * @return An entity read from the parser or <code>null</code> if an 'close 
      * array' token is immediately stumbled upon.
-     * @throws IOException 
+     * 
+     * @throws IOException if some IO situation emerges. 
      */
     protected abstract E tryToReadEntity(
         final Annotation[] annotations, 
