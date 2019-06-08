@@ -18,8 +18,6 @@ package br.nom.abdon.rest;
 
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;

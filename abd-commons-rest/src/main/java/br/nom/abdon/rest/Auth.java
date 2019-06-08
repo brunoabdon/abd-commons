@@ -38,7 +38,9 @@ public class Auth {
             !Boolean.parseBoolean(System.getenv("ABD_AUTH_OMNI_EST_LICET"))
                 ? new HashSet<>()
                 : new HashSet<String>() {
-                        @Override
+                		private static final long serialVersionUID = -2604L;
+
+						@Override
                         public boolean add(final String e) {return false;}
 
                         @Override
