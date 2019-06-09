@@ -38,10 +38,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.nom.abdon.util.modelo.Identifiable;
 import pl.touk.throwing.ThrowingFunction;
 
 import static br.nom.abdon.rest.RESTClientRTException.SERVIDOR_FORA;
-import br.nom.abdon.util.Identifiable;
 
 /**
  * 

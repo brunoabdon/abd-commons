@@ -14,17 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.nom.abdon.util;
+package br.nom.abdon.util.modelo;
+
+import java.time.LocalDate;
 
 /**
- * Um tipo identificável por uma chave.
- * 
- * @param <Key> o tipo da chave da que identifica o elemento.
+ *
  * @author Bruno Abdon
- * 
  */
-public interface Identifiable<Key> {
-    
-    public Key getId();
-    
+public class Periodo {
+
+    private LocalDate dataMinima;
+    private LocalDate dataMaxima;
+
+    public Periodo(final LocalDate dataMinima, final LocalDate dataMaxima) {
+        this.dataMinima = dataMinima;
+        this.dataMaxima = dataMaxima;
+    }
+
+    public LocalDate getDataMinima() {
+        return dataMinima;
+    }
+
+    public void setDataMinima(final LocalDate dataMinima) {
+        this.dataMinima = dataMinima;
+    }
+
+    public LocalDate getDataMaxima() {
+        return dataMaxima;
+    }
+
+    public void setDataMaxima(final LocalDate dataMaxima) {
+        this.dataMaxima = dataMaxima;
+    }
 }

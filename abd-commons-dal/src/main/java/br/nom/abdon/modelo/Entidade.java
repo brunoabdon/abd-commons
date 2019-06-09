@@ -2,7 +2,7 @@ package br.nom.abdon.modelo;
 
 import java.io.Serializable;
 
-import br.nom.abdon.util.Identifiable;
+import br.nom.abdon.util.modelo.Identifiable;
 
 
 /**
