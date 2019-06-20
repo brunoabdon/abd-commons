@@ -17,15 +17,10 @@
 package com.github.brunoabdon.commons.rest;
 
 import java.math.BigInteger;
-
-import com.github.brunoabdon.commons.dal.DalException;
-import com.github.brunoabdon.commons.dal.Dao;
-import com.github.brunoabdon.commons.dal.EntityNotFoundException;
-import com.github.brunoabdon.commons.modelo.Entidade;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,11 +36,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.EntityTag;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.github.brunoabdon.commons.dal.DalException;
+import com.github.brunoabdon.commons.dal.Dao;
+import com.github.brunoabdon.commons.dal.EntityNotFoundException;
+import com.github.brunoabdon.commons.modelo.Entidade;
 
 /**
  * Classe base para resources implementando operações básicas de CRUD.
@@ -239,9 +240,21 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         
         return response;
     }
-
+    
     //nao precisava ser no 'crud' esse metodo.
     protected Response buildResponse(
+            final Request request, 
+            final HttpHeaders headers,
+            final List<? extends E> elements){
+
+        final GenericEntity<List<? extends E>> genericEntity = 
+                new GenericEntity<List<? extends E>>(elements){};
+        
+        return this.buildResponse(request, headers, genericEntity);
+    }    
+
+    //nao precisava ser no 'crud' esse metodo.
+    private Response buildResponse(
             final Request request, 
             final HttpHeaders headers,
             final Object entity){
