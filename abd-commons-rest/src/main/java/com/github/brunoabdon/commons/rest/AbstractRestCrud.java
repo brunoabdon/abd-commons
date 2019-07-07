@@ -68,9 +68,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
 
-    @PersistenceUnit(unitName = "gastoso_peruni")
-    protected EntityManagerFactory emf;
-
     private final String path;
 
     public AbstractRestCrud(final String path) {
@@ -86,7 +83,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             response = ERROR_MISSING_ENTITY;
         } else {
 
-            final EntityManager entityManager = emf.createEntityManager();
+            final EntityManager entityManager = getEmf().createEntityManager();
             try {
 
                 entityManager.getTransaction().begin();
@@ -134,7 +131,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
         final Response response;
 
-        final EntityManager entityManager = emf.createEntityManager();
+        final EntityManager entityManager = getEmf().createEntityManager();
         try {
             final E entity = getEntity(entityManager, id);
 
@@ -181,7 +178,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
         } else {
 
-            final EntityManager entityManager = emf.createEntityManager();
+            final EntityManager entityManager = getEmf().createEntityManager();
 
             try {
 
@@ -216,7 +213,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
         Response response;
 
-        final EntityManager entityManager = emf.createEntityManager();
+        final EntityManager entityManager = getEmf().createEntityManager();
         try {
             entityManager.getTransaction().begin();
 
@@ -300,4 +297,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     private String makeError() {
         return new BigInteger(130, random).toString(32);
     }
+    
+    protected abstract EntityManagerFactory getEmf();
+    
 }
