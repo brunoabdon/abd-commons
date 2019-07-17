@@ -25,8 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -68,6 +67,9 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
 
+    @PersistenceContext
+    protected EntityManager entityManager;
+    
     private final String path;
 
     public AbstractRestCrud(final String path) {
@@ -83,16 +85,12 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             response = ERROR_MISSING_ENTITY;
         } else {
 
-            final EntityManager entityManager = getEmf().createEntityManager();
             try {
 
-                entityManager.getTransaction().begin();
 
                 final Dao<E, Key> dao = getDao();
 
                 dao.criar(entityManager, entity);
-
-                entityManager.getTransaction().commit();
 
                 final URI uri = new URI(path + String.valueOf(entity.getId()));
 
@@ -115,8 +113,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                     Response.status(Response.Status.CONFLICT)
                             .entity(e.getMessage())
                             .build();
-            } finally {
-                entityManager.close();
             }
         }
         return response;
@@ -131,7 +127,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
         final Response response;
 
-        final EntityManager entityManager = getEmf().createEntityManager();
         try {
             final E entity = getEntity(entityManager, id);
 
@@ -155,8 +150,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             throw new WebApplicationException(
                 ex.getMessage(), 
                 Response.Status.BAD_REQUEST);
-        } finally {
-            entityManager.close();
         }
         return response;
     }
@@ -177,8 +170,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             response = ERROR_MISSING_ENTITY;
 
         } else {
-
-            final EntityManager entityManager = getEmf().createEntityManager();
 
             try {
 
@@ -213,7 +204,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
         Response response;
 
-        final EntityManager entityManager = getEmf().createEntityManager();
         try {
             entityManager.getTransaction().begin();
 
@@ -231,8 +221,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 Response.status(Response.Status.CONFLICT)
                         .entity(e.getMessage())
                         .build();
-        } finally {
-            entityManager.close();
         }
         
         return response;
@@ -297,7 +285,4 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     private String makeError() {
         return new BigInteger(130, random).toString(32);
     }
-    
-    protected abstract EntityManagerFactory getEmf();
-    
 }
