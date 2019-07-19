@@ -39,6 +39,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -63,7 +64,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     private static final SecureRandom random = new SecureRandom();
     
     protected static final Response ERROR_MISSING_ENTITY = 
-        Response.status(Response.Status.BAD_REQUEST)
+        Response.status(BAD_REQUEST)
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
 
@@ -140,16 +141,12 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             }
             response = builder.build();
 
-        } catch ( EntityNotFoundException ex){
-            log.log(Level.FINE , 
-                    ex, 
-                    () -> "Not found " + id + " by " + getClass());
+        } catch (final EntityNotFoundException ex){
+            log.log(Level.FINE , ex, () -> "Not found " + id);
             throw new NotFoundException(ex);
-        } catch (DalException ex) {
+        } catch (final DalException ex) {
             log.log(Level.FINE, "Erro ao tentar pegar.", ex);
-            throw new WebApplicationException(
-                ex.getMessage(), 
-                Response.Status.BAD_REQUEST);
+            throw new WebApplicationException(ex.getMessage(),BAD_REQUEST);
         }
         return response;
     }
@@ -175,11 +172,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
                 entity = prepararAtualizacao(entityManager, entity, id);
 
-                entityManager.getTransaction().begin();
-
                 entity = getDao().atualizar(entityManager, entity);
-
-                entityManager.getTransaction().commit();
 
                 response = Response.ok(entity).build();
 
@@ -205,12 +198,8 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         Response response;
 
         try {
-            entityManager.getTransaction().begin();
-
             getDao().deletar(entityManager, id);
             
-            entityManager.getTransaction().commit();
-
             response = Response.noContent().build();
             
         } catch(EntityNotFoundException ex){
