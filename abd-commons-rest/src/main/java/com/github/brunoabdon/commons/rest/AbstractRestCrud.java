@@ -222,7 +222,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             final List<? extends E> elements){
 
         final GenericEntity<List<? extends E>> genericEntity = 
-                new GenericEntity<List<? extends E>>(elements){};
+            new GenericEntity<List<? extends E>>(elements){};
         
         return this.buildResponse(request, headers, genericEntity);
     }    
