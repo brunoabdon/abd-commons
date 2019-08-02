@@ -16,6 +16,8 @@
  */
 package com.github.brunoabdon.commons.rest;
 
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,7 +41,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

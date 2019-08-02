@@ -39,7 +39,7 @@
             <groupId>com.github.brunoabdon.commons</groupId>
             <artifactId>abd-commons-dal</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
     </dependencies>
 
     <scm>
