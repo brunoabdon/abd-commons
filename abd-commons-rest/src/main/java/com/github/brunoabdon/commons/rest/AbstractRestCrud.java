@@ -180,9 +180,9 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
                 response = Response.ok(entity).build();
 
-            } catch ( EntityNotFoundException ex){
+            } catch (final EntityNotFoundException ex){
                 throw new NotFoundException(ex);
-            } catch (DalException e) {
+            } catch (final DalException e) {
                 log.log(Level.FINE, "Erro ao tentar atualizar.", e);
                 response =
                     Response.status(Response.Status.CONFLICT)
@@ -207,9 +207,9 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             
             response = Response.noContent().build();
             
-        } catch(EntityNotFoundException ex){
+        } catch(final EntityNotFoundException ex){
             throw new NotFoundException(ex);
-        } catch (DalException e) {
+        } catch (final DalException e) {
             log.log(Level.FINE, "Erro ao tentar deletar.", e);
             response =
                 Response.status(Response.Status.CONFLICT)
