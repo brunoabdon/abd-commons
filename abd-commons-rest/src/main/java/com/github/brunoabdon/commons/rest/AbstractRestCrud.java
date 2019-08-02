@@ -98,7 +98,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 response = 
                     Response.created(uri).entity(entity).build();
 
-            } catch (URISyntaxException ex) {
+            } catch (final URISyntaxException ex) {
 
                 final String errorCode = makeError();
 
@@ -108,7 +108,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                             .entity("Erro: " + errorCode)
                             .build();
 
-            } catch (DalException e){
+            } catch (final DalException e){
                 log.log(Level.FINE, "Erro ao tentar criar.", e);
                 response = 
                     Response.status(Response.Status.CONFLICT)
