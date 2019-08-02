@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -79,6 +80,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
     }
 
     @POST
+    @Transactional
     public Response criar(final E entity) {
 
         Response response;
@@ -160,6 +162,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
     @POST
     @Path("{id}")
+    @Transactional
     public Response atualizar(final @PathParam("id") Key id, E entity) {
 
         Response response;
@@ -194,6 +197,7 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
     @DELETE
     @Path("{id}")
+    @Transactional
     public Response deletar(@PathParam("id") Key id) {
 
         Response response;
