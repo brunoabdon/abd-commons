@@ -136,8 +136,6 @@ public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
                     Response.status(Response.Status.CONFLICT)
                             .entity(e.getMessage())
                             .build();
-            } finally {
-                entityManager.close();
             }
         }
         return response;
