@@ -91,7 +91,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
 
             try {
 
-
                 final Dao<E, Key> dao = getDao();
 
                 dao.criar(entityManager, entity);

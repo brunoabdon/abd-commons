@@ -15,6 +15,7 @@ import javax.persistence.MappedSuperclass;
 public class EntidadeBaseInt implements Entidade<Integer> {
 
     private static final long serialVersionUID = 5533865547017401869L;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
