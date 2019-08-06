@@ -16,14 +16,17 @@
  */
 package com.github.brunoabdon.commons.util.modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- *
+ * Um espaço de tempo limitado por dois {@link LocalDate dias}.
  * @author Bruno Abdon
  */
-public class Periodo {
+public class Periodo implements Serializable {
 
+    private static final long serialVersionUID = 6000651240503349219L;
+    
     private LocalDate dataMinima;
     private LocalDate dataMaxima;
 
