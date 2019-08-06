@@ -22,28 +22,17 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.EntityTag;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
@@ -58,7 +47,8 @@ import com.github.brunoabdon.commons.modelo.Entidade;
  *
  * @author Bruno Abdon
  */
-public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
+public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
+        extends AbstractRestReadOnlyResource<E, Key>{
 
     private static final Logger log = 
         Logger.getLogger(AbstractRestCrud.class.getName());
@@ -70,9 +60,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
 
-    @PersistenceContext
-    protected EntityManager entityManager;
-    
     private final String path;
 
     public AbstractRestCrud(final String path) {
@@ -119,44 +106,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
             }
         }
         return response;
-    }
-
-    @GET
-    @Path("{id}")
-    public Response pegar(
-            final @Context Request request, 
-            final @PathParam("id") Key id,
-            final @Context HttpHeaders httpHeaders){
-
-        final Response response;
-
-        try {
-            final E entity = getEntity(entityManager, id);
-
-            EntityTag tag =  makeTag(entity, httpHeaders);
-            Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
-            if(builder==null){
-		//preconditions are not met and the cache is invalid
-		//need to send new value with reponse code 200 (OK)
-		builder = Response.ok(entity);
-		builder.tag(tag);
-            }
-            response = builder.build();
-
-        } catch (final EntityNotFoundException ex){
-            log.log(Level.FINE , ex, () -> "Not found " + id);
-            throw new NotFoundException(ex);
-        } catch (final DalException ex) {
-            log.log(Level.FINE, "Erro ao tentar pegar.", ex);
-            throw new WebApplicationException(ex.getMessage(),BAD_REQUEST);
-        }
-        return response;
-    }
-
-    protected E getEntity(
-            final EntityManager entityManager, 
-            final Key id) throws DalException {
-        return getDao().find(entityManager, id);
     }
 
     @POST
@@ -219,54 +168,6 @@ public abstract class AbstractRestCrud <E extends Entidade<Key>,Key>{
         return response;
     }
     
-    //nao precisava ser no 'crud' esse metodo.
-    protected Response buildResponse(
-            final Request request, 
-            final HttpHeaders headers,
-            final List<? extends E> elements){
-
-        final GenericEntity<List<? extends E>> genericEntity = 
-            new GenericEntity<List<? extends E>>(elements){};
-        
-        return this.buildResponse(request, headers, genericEntity);
-    }    
-
-    //nao precisava ser no 'crud' esse metodo.
-    private Response buildResponse(
-            final Request request, 
-            final HttpHeaders headers,
-            final Object entity){
-
-        final EntityTag tag = makeTag(entity, headers);
-
-        Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
-        
-        if(builder==null){
-            //preconditions are not met and the cache is invalid
-            //need to send new value with reponse code 200 (OK)
-            
-            builder = Response.ok(entity);
-            builder.tag(tag);
-        }
-        return builder.build();
-    }
-
-    private EntityTag makeTag(
-            final Object thing, final HttpHeaders httpHeaders) {
-
-        final String accept = httpHeaders.getHeaderString(HttpHeaders.ACCEPT);
-
-        final int hashCode = 
-            new HashCodeBuilder(3,23)
-                .append(thing)
-                .append(accept)
-                .toHashCode();
-        
-        return new EntityTag(Integer.toString(hashCode));
-    }
-
-    protected abstract Dao<E,Key> getDao();
-
     protected E prepararAtualizacao(
             final EntityManager entityManager, 
             final E entity, 
