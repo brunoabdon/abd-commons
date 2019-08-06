@@ -16,8 +16,9 @@
  */
 package com.github.brunoabdon.commons.dal;
 
-import com.github.brunoabdon.commons.modelo.Entidade;
 import javax.persistence.EntityManager;
+
+import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
 /**
  *
@@ -25,7 +26,7 @@ import javax.persistence.EntityManager;
  * @param <E> o tipo da entidade persistida
  * @param <K> o tipo da chave da entidade
  */
-public interface Dao<E extends Entidade<K>,K> {
+public interface Dao<E extends Identifiable<K>,K> {
 
     public E find(final EntityManager em, final K key) throws DalException;
 

@@ -41,7 +41,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
 import com.github.brunoabdon.commons.dal.EntityNotFoundException;
-import com.github.brunoabdon.commons.modelo.Entidade;
+import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
 /**
  * Classe base para resources implementando operações de leitura de CRUD.
@@ -52,7 +52,7 @@ import com.github.brunoabdon.commons.modelo.Entidade;
  * @author Bruno Abdon
  */
 public abstract class AbstractRestReadOnlyResource 
-                        <E extends Entidade<Key>, Key> {
+                        <E extends Identifiable<Key>, Key> {
 
     private static final Logger log = 
         Logger.getLogger(AbstractRestReadOnlyResource.class.getName());
