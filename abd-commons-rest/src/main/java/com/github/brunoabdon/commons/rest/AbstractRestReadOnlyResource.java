@@ -54,7 +54,7 @@ import com.github.brunoabdon.commons.util.modelo.Identifiable;
 public abstract class AbstractRestReadOnlyResource 
                         <E extends Identifiable<Key>, Key> {
 
-    private static final Logger log = 
+	private static final Logger log = 
         Logger.getLogger(AbstractRestReadOnlyResource.class.getName());
 
     @PersistenceContext
