@@ -25,7 +25,6 @@ import java.security.SecureRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.NotFoundException;
@@ -121,10 +120,10 @@ public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
         } else {
 
             try {
-
-                entity = prepararAtualizacao(entityManager, entity, id);
-
-                entity = getDao().atualizar(entityManager, entity);
+                
+                final E entidadeAtualizar = getDao().find(entityManager, id);
+                this.prencheValoresAtualizacao(entidadeAtualizar,entity);
+                entity = getDao().atualizar(entityManager, entidadeAtualizar);
 
                 response = Response.ok(entity).build();
 
@@ -166,12 +165,10 @@ public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
         return response;
     }
     
-    protected E prepararAtualizacao(
-            final EntityManager entityManager, 
-            final E entity, 
-            final Key id) {
-        entity.setId(id);
-        return entity;
+    @SuppressWarnings("unused")
+    protected void prencheValoresAtualizacao(
+            final E entityPraAtualizar, 
+            final E entidadeValoresNovos) {
     }
 
     private String makeError() {
