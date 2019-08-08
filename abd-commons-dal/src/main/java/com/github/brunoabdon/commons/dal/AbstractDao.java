@@ -18,9 +18,9 @@ package com.github.brunoabdon.commons.dal;
 
 import java.util.logging.Logger;
 
-import com.github.brunoabdon.commons.modelo.Entidade;
-
 import javax.persistence.EntityManager;
+
+import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
 /**
  *
@@ -28,7 +28,8 @@ import javax.persistence.EntityManager;
  * @param <E> o tipo da entidade persistida
  * @param <K> o tipo da chave da entidade
  */
-public abstract class AbstractDao<E extends Entidade<K>,K> implements Dao<E,K>{
+public abstract class AbstractDao<E extends Identifiable<K>,K> 
+        implements Dao<E,K>{
 
     private static final Logger LOG = 
         Logger.getLogger(AbstractDao.class.getName());
@@ -57,13 +58,21 @@ public abstract class AbstractDao<E extends Entidade<K>,K> implements Dao<E,K>{
     }
 
     @Override
-    public E atualizar(final EntityManager em, final E entity) 
+    public E atualizar(final EntityManager em, final K key, final E entity) 
             throws DalException {
-        LOG.finest(() -> "Atualizando " + entity);
-        validarPraAtualizacao(em,entity);
-        find(em, entity.getId());
-        return em.merge(entity);
+        
+        validarPraAtualizacao(em,key,entity);
+        
+        final E persistedEntity = find(em, key);
+        
+        atualizarEntity(entity,persistedEntity);
+        
+        return persistedEntity;
     }
+
+    protected void atualizarEntity(E source, E dest) {
+        throw new UnsupportedOperationException("Atualzação não suportada.");
+    };
 
     @Override
     public void deletar(final EntityManager em, final K key) 
@@ -79,7 +88,10 @@ public abstract class AbstractDao<E extends Entidade<K>,K> implements Dao<E,K>{
         validar(em,entity);
     }
 
-    protected void validarPraAtualizacao(final EntityManager em,final E entity) 
+    protected void validarPraAtualizacao(
+            final EntityManager em, 
+            final K k, 
+            final E entity) 
             throws DalException{
         validar(em,entity);
     }

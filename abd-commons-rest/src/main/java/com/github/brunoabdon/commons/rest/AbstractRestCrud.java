@@ -25,7 +25,6 @@ import java.security.SecureRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.NotFoundException;
@@ -37,7 +36,7 @@ import javax.ws.rs.core.Response;
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
 import com.github.brunoabdon.commons.dal.EntityNotFoundException;
-import com.github.brunoabdon.commons.modelo.Entidade;
+import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
 /**
  * Classe base para resources implementando operações básicas de CRUD.
@@ -47,7 +46,7 @@ import com.github.brunoabdon.commons.modelo.Entidade;
  *
  * @author Bruno Abdon
  */
-public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
+public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
         extends AbstractRestReadOnlyResource<E, Key>{
 
     private static final Logger log = 
@@ -111,7 +110,7 @@ public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
     @POST
     @Path("{id}")
     @Transactional
-    public Response atualizar(final @PathParam("id") Key id, E entity) {
+    public Response atualizar(final @PathParam("id") Key id, final E entity) {
 
         Response response;
 
@@ -121,12 +120,11 @@ public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
         } else {
 
             try {
+            
+                final E persistedEntity = 
+                    this.getDao().atualizar(entityManager, id, entity);
 
-                entity = prepararAtualizacao(entityManager, entity, id);
-
-                entity = getDao().atualizar(entityManager, entity);
-
-                response = Response.ok(entity).build();
+                response = Response.ok(persistedEntity).build();
 
             } catch (final EntityNotFoundException ex){
                 throw new NotFoundException(ex);
@@ -166,14 +164,6 @@ public abstract class AbstractRestCrud<E extends Entidade<Key>,Key>
         return response;
     }
     
-    protected E prepararAtualizacao(
-            final EntityManager entityManager, 
-            final E entity, 
-            final Key id) {
-        entity.setId(id);
-        return entity;
-    }
-
     private String makeError() {
         return new BigInteger(130, random).toString(32);
     }
