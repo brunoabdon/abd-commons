@@ -28,7 +28,7 @@ import javax.persistence.EntityManager;
  * @param <E> o tipo da entidade persistida
  * @param <K> o tipo da chave da entidade
  */
-public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E,K>{
+public abstract class AbstractDao<E extends Entidade<K>,K> implements Dao<E,K>{
 
     private static final Logger LOG = 
         Logger.getLogger(AbstractDao.class.getName());
@@ -40,8 +40,8 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E,K>{
     }
 
     @Override
-    public E find(final EntityManager em, final K key) throws DalException{
-        E entity = em.find(klass, key);
+    public E find(final EntityManager em, final K key) throws DalException {
+        final E entity = em.find(klass, key);
         if(entity == null){
             throw new EntityNotFoundException(key);
         }
@@ -79,16 +79,16 @@ public abstract class AbstractDao<E extends Entidade<K>, K> implements Dao<E,K>{
         validar(em,entity);
     }
 
-    protected void validarPraAtualizacao(final EntityManager em, final E entity) 
+    protected void validarPraAtualizacao(final EntityManager em,final E entity) 
             throws DalException{
         validar(em,entity);
     }
 
     protected void validar(final EntityManager em, final E entity) 
-            throws DalException {
+        throws DalException {
     };
 
     protected void prepararDelecao(final EntityManager em, final E entity) 
-            throws DalException {
+        throws DalException {
     };
 }
