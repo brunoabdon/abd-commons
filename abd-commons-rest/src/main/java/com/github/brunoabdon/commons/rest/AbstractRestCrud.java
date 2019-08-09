@@ -43,8 +43,8 @@ import com.github.brunoabdon.commons.util.modelo.Identifiable;
  *
  * @author Bruno Abdon
  */
-public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
-        extends AbstractRestReadOnlyResource<E, Key>{
+public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
+        extends AbstractRestReadOnlyResource<E, Key, PathKey>{
 
     private static final Logger log = 
         Logger.getLogger(AbstractRestCrud.class.getName());
@@ -93,7 +93,9 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
     @POST
     @Path("{id}")
     @Transactional
-    public Response atualizar(final @PathParam("id") Key id, final E entity) {
+    public Response atualizar(
+            final @PathParam("id") PathKey pathId, 
+            final E entity) {
 
         Response response;
 
@@ -102,6 +104,8 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
 
         } else {
 
+            final Key id = getFullId(pathId);
+            
             try {
             
                 final E persistedEntity = 
@@ -125,10 +129,12 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
     @DELETE
     @Path("{id}")
     @Transactional
-    public Response deletar(@PathParam("id") final Key id) {
+    public Response deletar(@PathParam("id") final PathKey pathId) {
 
         Response response;
 
+        final Key id = getFullId(pathId);
+        
         try {
             getDao().deletar(id);
             
@@ -146,5 +152,4 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
         
         return response;
     }
-    
 }

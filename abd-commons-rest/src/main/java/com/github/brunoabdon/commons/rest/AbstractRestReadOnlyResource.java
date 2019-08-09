@@ -51,7 +51,7 @@ import com.github.brunoabdon.commons.util.modelo.Identifiable;
  * @author Bruno Abdon
  */
 public abstract class AbstractRestReadOnlyResource 
-                        <E extends Identifiable<Key>, Key> {
+                        <E extends Identifiable<Key>, Key, PathKey> {
 
 	private static final Logger log = 
         Logger.getLogger(AbstractRestReadOnlyResource.class.getName());
@@ -63,12 +63,15 @@ public abstract class AbstractRestReadOnlyResource
     @Path("{id}")
     public Response pegar(
             final @Context Request request, 
-            final @PathParam("id") Key id,
+            final @PathParam("id") PathKey pathId,
             final @Context HttpHeaders httpHeaders){
 
         final Response response;
 
+        final Key id = getFullId(pathId);
+        
         try {
+            
             final E entity = getEntity(id);
 
             EntityTag tag =  makeTag(entity, httpHeaders);
@@ -91,6 +94,8 @@ public abstract class AbstractRestReadOnlyResource
         }
         return response;
     }
+
+    protected abstract Key getFullId(final PathKey pathId);
 
     protected E getEntity(final Key id) throws DalException {
         return getDao().find(id);
