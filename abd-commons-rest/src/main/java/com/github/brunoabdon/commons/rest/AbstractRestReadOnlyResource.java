@@ -73,7 +73,8 @@ public abstract class AbstractRestReadOnlyResource
             final E entity = getEntity(entityManager, id);
 
             EntityTag tag =  makeTag(entity, httpHeaders);
-            Response.ResponseBuilder builder = request.evaluatePreconditions(tag);
+            Response.ResponseBuilder builder = 
+                request.evaluatePreconditions(tag);
             if(builder==null){
 		//preconditions are not met and the cache is invalid
 		//need to send new value with reponse code 200 (OK)
