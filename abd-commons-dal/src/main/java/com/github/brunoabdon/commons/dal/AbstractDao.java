@@ -19,6 +19,7 @@ package com.github.brunoabdon.commons.dal;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
@@ -34,6 +35,7 @@ public abstract class AbstractDao<E extends Identifiable<K>,K>
     private static final Logger LOG = 
         Logger.getLogger(AbstractDao.class.getName());
     
+    @PersistenceContext
     private EntityManager em;
     
     private final Class<E> klass;
