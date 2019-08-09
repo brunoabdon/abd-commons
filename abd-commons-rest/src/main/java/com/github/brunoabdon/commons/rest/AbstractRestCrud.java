@@ -28,9 +28,7 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
@@ -55,9 +53,6 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
         Response.status(BAD_REQUEST)
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
-
-    @Context
-    private UriInfo uriInfo;
 
     @POST
     @Transactional

@@ -33,6 +33,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -55,6 +56,9 @@ public abstract class AbstractRestReadOnlyResource
 	private static final Logger log = 
         Logger.getLogger(AbstractRestReadOnlyResource.class.getName());
 
+    @Context
+    protected UriInfo uriInfo;
+	
     @GET
     @Path("{id}")
     public Response pegar(
