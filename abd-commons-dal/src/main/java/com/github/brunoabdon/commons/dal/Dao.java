@@ -16,8 +16,6 @@
  */
 package com.github.brunoabdon.commons.dal;
 
-import javax.persistence.EntityManager;
-
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
 /**
@@ -28,14 +26,11 @@ import com.github.brunoabdon.commons.util.modelo.Identifiable;
  */
 public interface Dao<E extends Identifiable<K>,K> {
 
-    public E find(final EntityManager em, final K key) throws DalException;
+    public E find(final K key) throws DalException;
 
-    public void criar(final EntityManager em, final E entity)
-            throws DalException;
+    public void criar(final E entity) throws DalException;
 
-    public E atualizar(final EntityManager em, final K key, final E entity) 
-            throws DalException;
+    public E atualizar(final K key, final E entity) throws DalException;
 
-    public void deletar(final EntityManager em, final K key) 
-            throws DalException;
+    public void deletar(final K key) throws DalException;
 }

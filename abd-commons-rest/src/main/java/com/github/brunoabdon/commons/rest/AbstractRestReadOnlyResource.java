@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
@@ -57,9 +55,6 @@ public abstract class AbstractRestReadOnlyResource
 	private static final Logger log = 
         Logger.getLogger(AbstractRestReadOnlyResource.class.getName());
 
-    @PersistenceContext
-    protected EntityManager entityManager;
-    
     @GET
     @Path("{id}")
     public Response pegar(
@@ -70,7 +65,7 @@ public abstract class AbstractRestReadOnlyResource
         final Response response;
 
         try {
-            final E entity = getEntity(entityManager, id);
+            final E entity = getEntity(id);
 
             EntityTag tag =  makeTag(entity, httpHeaders);
             Response.ResponseBuilder builder = 
@@ -93,10 +88,8 @@ public abstract class AbstractRestReadOnlyResource
         return response;
     }
 
-    protected E getEntity(
-            final EntityManager entityManager, 
-            final Key id) throws DalException {
-        return getDao().find(entityManager, id);
+    protected E getEntity(final Key id) throws DalException {
+        return getDao().find(id);
     }
 
     //precisava ser no 'crud' esse metodo

@@ -73,7 +73,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
 
                 final Dao<E, Key> dao = getDao();
 
-                dao.criar(entityManager, entity);
+                dao.criar(entity);
 
                 final URI uri = 
             		uriInfo
@@ -110,7 +110,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
             try {
             
                 final E persistedEntity = 
-                    this.getDao().atualizar(entityManager, id, entity);
+                    this.getDao().atualizar(id, entity);
 
                 response = Response.ok(persistedEntity).build();
 
@@ -135,7 +135,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
         Response response;
 
         try {
-            getDao().deletar(entityManager, id);
+            getDao().deletar(id);
             
             response = Response.noContent().build();
             
