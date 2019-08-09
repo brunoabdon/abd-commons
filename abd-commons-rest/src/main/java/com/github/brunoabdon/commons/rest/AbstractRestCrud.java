@@ -18,10 +18,7 @@ package com.github.brunoabdon.commons.rest;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
-import java.math.BigInteger;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.SecureRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +28,9 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
@@ -52,18 +51,13 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
     private static final Logger log = 
         Logger.getLogger(AbstractRestCrud.class.getName());
 
-    private static final SecureRandom random = new SecureRandom();
-    
     protected static final Response ERROR_MISSING_ENTITY = 
         Response.status(BAD_REQUEST)
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
 
-    private final String path;
-
-    public AbstractRestCrud(final String path) {
-        this.path = path + "/" ;
-    }
+    @Context
+    private UriInfo uriInfo;
 
     @POST
     @Transactional
@@ -81,20 +75,14 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
 
                 dao.criar(entityManager, entity);
 
-                final URI uri = new URI(path + String.valueOf(entity.getId()));
-
+                final URI uri = 
+            		uriInfo
+            			.getAbsolutePathBuilder()
+            			.path(String.valueOf(entity.getId()))
+            			.build(); 
+                		
                 response = 
                     Response.created(uri).entity(entity).build();
-
-            } catch (final URISyntaxException ex) {
-
-                final String errorCode = makeError();
-
-                log.log(Level.SEVERE, ex, () -> "[" + errorCode + "]");
-                response = 
-                    Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                            .entity("Erro: " + errorCode)
-                            .build();
 
             } catch (final DalException e){
                 log.log(Level.FINE, "Erro ao tentar criar.", e);
@@ -164,7 +152,4 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
         return response;
     }
     
-    private String makeError() {
-        return new BigInteger(130, random).toString(32);
-    }
 }
