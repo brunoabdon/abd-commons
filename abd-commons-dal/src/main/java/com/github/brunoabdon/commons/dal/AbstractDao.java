@@ -70,7 +70,7 @@ public abstract class AbstractDao<E extends Identifiable<K>,K>
         return persistedEntity;
     }
 
-    protected void atualizarEntity(E source, E dest) {
+    protected void atualizarEntity(final E source, final E dest) {
         throw new UnsupportedOperationException("Atualzação não suportada.");
     };
 
