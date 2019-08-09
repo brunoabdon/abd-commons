@@ -130,7 +130,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key>
     @DELETE
     @Path("{id}")
     @Transactional
-    public Response deletar(@PathParam("id") Key id) {
+    public Response deletar(@PathParam("id") final Key id) {
 
         Response response;
 

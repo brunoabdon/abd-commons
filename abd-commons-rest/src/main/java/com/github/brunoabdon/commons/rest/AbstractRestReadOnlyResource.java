@@ -145,6 +145,4 @@ public abstract class AbstractRestReadOnlyResource
     }
 
     protected abstract Dao<E,Key> getDao();
-
-
 }
