@@ -26,6 +26,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
@@ -54,7 +55,23 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
 
-    @POST
+    
+    @PUT
+    @Path("{id}")
+    @Transactional
+    public Response criar(
+    		final @PathParam("id") PathKey pathId,
+    		final E entity) {
+    	
+    	final Key id = getFullId(pathId);
+    	
+    	this.defineChave(entity,id);
+    	
+    	return this.criar(entity);
+    	
+    }
+
+	@POST
     @Transactional
     public Response criar(final E entity) {
 
@@ -152,4 +169,9 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
         
         return response;
     }
+    
+    protected void defineChave(final E entity, final Key id) {
+    	log.warning("Pra criar por PUT, é bom setar a chave.");
+    };
+    
 }
