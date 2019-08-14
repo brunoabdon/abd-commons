@@ -97,11 +97,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
                     Response.created(uri).entity(entity).build();
 
             } catch (final DalException e){
-                log.log(Level.FINE, "Erro ao tentar criar.", e);
-                response = 
-                    Response.status(Response.Status.CONFLICT)
-                            .entity(e.getMessage())
-                            .build();
+                response = dealWith(e);
             }
         }
         return response;
@@ -174,4 +170,13 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
     	log.warning("Pra criar por PUT, é bom setar a chave.");
     };
     
+	protected Response dealWith(final DalException e) {
+		Response response;
+		log.log(Level.FINE, "Erro ao tentar criar.", e);
+		response = 
+		    Response.status(Response.Status.CONFLICT)
+		            .entity(e.getMessage())
+		            .build();
+		return response;
+	}
 }
