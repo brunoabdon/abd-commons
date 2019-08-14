@@ -54,7 +54,6 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
         Response.status(BAD_REQUEST)
                 .entity("com.github.brunoabdon.commons.rest.MISSING_ENTITY")
                 .build();
-
     
     @PUT
     @Path("{id}")
@@ -146,6 +145,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
 		}
 		return response;
 	}
+
     @DELETE
     @Path("{id}")
     @Transactional
@@ -186,4 +186,7 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
 		            .build();
 		return response;
 	}
+
+
+    
 }
