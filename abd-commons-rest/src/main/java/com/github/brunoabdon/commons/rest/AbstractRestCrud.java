@@ -58,16 +58,26 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
     @PUT
     @Path("{id}")
     @Transactional
-    public Response criar(
+    public Response criarOuAtualizar(
     		final @PathParam("id") PathKey pathId,
     		final E entity) {
     	
-    	final Key id = getFullId(pathId);
+    	Response response;
     	
+    	final Key id = getFullId(pathId);
     	this.defineChave(entity,id);
     	
-    	return this.criar(entity);
+    	try {
+			getDao().find(id);
+			response = atualizar_(id,entity);
+			
+		} catch (final EntityNotFoundException e) {
+			response = this.criar(entity);
+		} catch (final DalException e) {
+			response = dealWith(e);
+		}
     	
+    	return response;    	
     }
 
 	@POST
