@@ -119,26 +119,33 @@ public abstract class AbstractRestCrud<E extends Identifiable<Key>,Key,PathKey>
 
             final Key id = getFullId(pathId);
             
-            try {
-            
-                final E persistedEntity = 
-                    this.getDao().atualizar(id, entity);
-
-                response = Response.ok(persistedEntity).build();
-
-            } catch (final EntityNotFoundException ex){
-                throw new NotFoundException(ex);
-            } catch (final DalException e) {
-                log.log(Level.FINE, "Erro ao tentar atualizar.", e);
-                response =
-                    Response.status(Response.Status.CONFLICT)
-                            .entity(e.getMessage())
-                            .build();
-            }
+            response = atualizar_(id, entity);
         }
         return response;
     }
 
+	private Response atualizar_(final Key id, final E entity) {
+
+		Response response;
+		
+		try {
+		
+		    final E persistedEntity = 
+		        this.getDao().atualizar(id, entity);
+
+		    response = Response.ok(persistedEntity).build();
+
+		} catch (final EntityNotFoundException ex){
+		    throw new NotFoundException(ex);
+		} catch (final DalException e) {
+		    log.log(Level.FINE, "Erro ao tentar atualizar.", e);
+		    response =
+		        Response.status(Response.Status.CONFLICT)
+		                .entity(e.getMessage())
+		                .build();
+		}
+		return response;
+	}
     @DELETE
     @Path("{id}")
     @Transactional
