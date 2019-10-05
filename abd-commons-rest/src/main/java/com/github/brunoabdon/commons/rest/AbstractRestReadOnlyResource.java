@@ -43,7 +43,8 @@ import com.github.brunoabdon.commons.dal.EntityNotFoundException;
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 
 /**
- * Classe base para resources implementando operações de leitura de CRUD.
+ * Classe base para resources implementando operações de leitura de CRUD. 
+ * <p><b>Obs:</b> Operação <i>listar</i> ainda não implementada.</p>
  * 
  * @param <E> O tipo da  entidade criada, lida.
  * @param <Key> O tipo da chave do elemento.
