@@ -8,9 +8,6 @@
 
     <name>Abd-Commons - Parent Project</name>
     <modules>
-        <module>abd-commons-rest</module>
-        <module>abd-commons-dal</module>
-        <module>abd-commons-util</module>
     </modules>
 	
     <licenses>
@@ -59,10 +56,5 @@
       </plugins>		
     </build>
 	  
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
 	  
 </project>
