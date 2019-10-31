@@ -14,16 +14,4 @@
     <description>Very very basic Java utility lib for use on my own projects.</description>
     <url>https://github.com/brunoabdon/abd-commons-util</url>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-        </dependency>      
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
-        </dependency>
-    </dependencies>
 </project>
