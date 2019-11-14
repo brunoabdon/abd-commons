@@ -87,10 +87,10 @@ public abstract class AbstractRestReadOnlyResource
             response = builder.build();
 
         } catch (final EntityNotFoundException ex){
-            log.log(Level.FINE , ex, () -> "Not found " + id);
+            log.log(Level.FINE, () -> "Not found " + id);
             throw new NotFoundException(ex);
         } catch (final DalException ex) {
-            log.log(Level.FINE, "Erro ao tentar pegar.", ex);
+            log.log(Level.FINE, "Erro ao tentar pegar.");
             throw new WebApplicationException(ex.getMessage(),BAD_REQUEST);
         }
         return response;
