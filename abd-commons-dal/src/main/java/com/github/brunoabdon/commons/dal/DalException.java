@@ -16,6 +16,8 @@
  */
 package com.github.brunoabdon.commons.dal;
 
+import java.io.Serializable;
+
 /**
  * Exceção na camada de acesso a dados.
  * 
@@ -24,17 +26,25 @@ package com.github.brunoabdon.commons.dal;
 public class DalException extends Exception {
 
     private static final long serialVersionUID = 5128378150540858893L;
-	private Object[] params;
+	private Serializable[] params;
 
     public DalException(final String message) {
         super(message);
     }
 
-    public DalException(final String message, final Object ... params) {
+    public DalException(final String message, final Serializable ... params) {
         this(message);
         this.params = params;
     }
 
+    public DalException(
+            final Throwable cause,
+            final String message, 
+            final Serializable ... params) {
+        super(message,cause);
+        this.params = params;
+    }
+    
     public Object[] getParams() {
         return params;
     }

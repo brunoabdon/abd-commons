@@ -31,6 +31,11 @@ public class EntityNotFoundException extends DalException{
     public EntityNotFoundException(final Object ... params) {
         super(ERRO_NOT_FOUND,params);
     }
+    public EntityNotFoundException(
+            final Throwable cause, 
+            final Object ... params) {
+        super(cause, ERRO_NOT_FOUND,params);
+    }
     
     
 }
