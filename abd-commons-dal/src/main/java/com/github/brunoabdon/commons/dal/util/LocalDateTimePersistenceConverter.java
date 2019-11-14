@@ -18,22 +18,23 @@ package com.github.brunoabdon.commons.dal.util;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import javax.persistence.AttributeConverter;
 
 /**
  *
  * @author Bruno Abdon
  */
 public class LocalDateTimePersistenceConverter 
-    implements AttributeConverter<LocalDateTime,Timestamp>{
+    implements NullSafeAttributeConverter<LocalDateTime,Timestamp>{
 
     @Override
-    public Timestamp convertToDatabaseColumn(final LocalDateTime localDateTime){
+    public Timestamp nullSafeConvertToDatabaseColumn(
+            final LocalDateTime localDateTime){
         return java.sql.Timestamp.valueOf(localDateTime);
     }
 
     @Override
-    public LocalDateTime convertToEntityAttribute(final Timestamp timestamp) {
+    public LocalDateTime nullSafeConvertToEntityAttribute(
+            final Timestamp timestamp) {
         return timestamp.toLocalDateTime();
     }
 }

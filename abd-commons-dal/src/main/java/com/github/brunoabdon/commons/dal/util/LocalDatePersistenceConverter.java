@@ -2,7 +2,7 @@ package com.github.brunoabdon.commons.dal.util;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import javax.persistence.AttributeConverter;
+
 import javax.persistence.Converter;
 
 /**
@@ -11,16 +11,16 @@ import javax.persistence.Converter;
  */
 
 @Converter(autoApply = true)
-public class LocalDatePersistenceConverter implements
-    AttributeConverter<LocalDate,Date> {
+public class LocalDatePersistenceConverter 
+        implements NullSafeAttributeConverter<LocalDate,Date> {
     
     @Override
-    public java.sql.Date convertToDatabaseColumn(final LocalDate entityValue) {
-        return java.sql.Date.valueOf(entityValue);
+    public LocalDate nullSafeConvertToEntityAttribute(final Date dbData) {
+        return dbData.toLocalDate();    
     }
 
     @Override
-    public LocalDate convertToEntityAttribute(final Date databaseValue) {
-        return databaseValue.toLocalDate();
+    public Date nullSafeConvertToDatabaseColumn(final LocalDate attribute) {
+        return java.sql.Date.valueOf(attribute);
     }
 }
